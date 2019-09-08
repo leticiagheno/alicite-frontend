@@ -76,7 +76,7 @@ export default {
 }
 
 #card-title {
-  background-color: #D81B60;
+  background-color: #F48FB1;
 }
 
 #card-text {
