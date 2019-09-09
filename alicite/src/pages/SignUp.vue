@@ -1,36 +1,24 @@
 <template>
     <v-container fill-height> 
         <v-card class="mx-auto" :width="1000">
-            <v-row class="d-flex align-center">
-                <v-icon color="pink darken-5"  id="hanger" x-large>mdi-hanger</v-icon>
-                <h2 id="card-title">Cadastro Cliente</h2>
-            </v-row>
-            <v-stepper v-model="e1">
-                <v-stepper-header id="stepper-background">
-                    <v-stepper-step 
-                        :complete="e1 > 1" 
-                        color="pink darken-5" 
-                        step="1" 
-                        @click="e1 = 1"> Dados Pessoais 
-                    </v-stepper-step>
-                    <v-divider></v-divider>
-                    <v-stepper-step 
-                        :complete="e1 > 2" 
-                        color="pink darken-5" 
-                        class="text-color"
-                        step="2" 
-                        @click="e1 = 2"> Endereço 
-                    </v-stepper-step>
-                    <v-divider></v-divider>
-                    <v-stepper-step 
-                        step="3" 
-                        color="pink darken-5" 
-                        @click="e1 = 3"> Conta
-                    </v-stepper-step>
-                </v-stepper-header>
+            <v-list-item id="card-header" class="d-flex justify-space-between">
+                <v-row>
+                    <v-icon color="pink darken-5" x-large>mdi-hanger</v-icon>
+                    <h2 id="card-title">Cadastro Cliente</h2>
+                </v-row>
+                <v-btn @click="loginPage" class="ma-2" color="pink" text>
+                    Login
+                </v-btn>
+            </v-list-item>
 
-                <v-stepper-items>
-                    <v-stepper-content class="stepper-padding" step="1">
+            <v-stepper v-model="e1" vertical>
+                <v-stepper-step 
+                    :complete="e1 > 1" 
+                    color="pink darken-5" 
+                    step="1" 
+                    @click="e1 = 1"> Dados Pessoais 
+                    </v-stepper-step>
+                           <v-stepper-content class="stepper-padding" step="1">
                         <v-form class="form-padding">
                             <v-text-field
                                 label="Nome"
@@ -46,23 +34,16 @@
                                 rounded
                                 required
                             />
-                            <v-row class="d-flex justify-end">
-                                <v-btn 
-                                    text 
-                                    @click="e1 = 1"
-                                > Voltar 
-                                </v-btn>
-                                <v-btn
-                                    text
-                                    color="pink lighten-1"
-                                    @click="e1 = 2"
-                                > Continuar
-                                </v-btn>
-                            </v-row>
                         </v-form>
                     </v-stepper-content>
-
-                    <v-stepper-content class="stepper-padding" step="2">
+                    <v-stepper-step 
+                        :complete="e1 > 2" 
+                        color="pink darken-5" 
+                        class="text-color"
+                        step="2" 
+                        @click="e1 = 2"> Endereço 
+                    </v-stepper-step>
+                     <v-stepper-content class="stepper-padding" step="2">
                         <v-form class="form-padding">
                             <v-text-field
                                 label="Rua"
@@ -125,24 +106,17 @@
                                     />
                                 </v-col>
                             </v-row>
-                            <v-row class="d-flex justify-end">
-                                <v-btn 
-                                    text 
-                                    @click="e1 = 1"
-                                > Voltar 
-                                </v-btn>
-                                <v-btn
-                                    text
-                                    color="pink lighten-1"
-                                    @click="e1 = 3"
-                                > Continuar
-                                </v-btn>
-                            </v-row>
                         </v-form>
                         
                     </v-stepper-content>
+                
+                    <v-stepper-step 
+                        step="3" 
+                        color="pink darken-5" 
+                        @click="e1 = 3"> Conta
+                    </v-stepper-step>
 
-                    <v-stepper-content class="stepper-padding" step="3">
+                     <v-stepper-content class="stepper-padding" step="3">
                         <v-form class="form-padding">
                             <v-text-field
                                 label="E-mail"
@@ -175,11 +149,6 @@
                                 required
                             />
                             <v-row class="d-flex justify-end">
-                                <v-btn 
-                                    text
-                                    @click="e1 = 2"
-                                > Voltar
-                                </v-btn>
                                  <v-btn
                                     text
                                     color="pink lighten-1"
@@ -189,7 +158,8 @@
                             </v-row>
                         </v-form>
                     </v-stepper-content>
-                </v-stepper-items>
+
+                  
             </v-stepper>
         </v-card>
     </v-container>
@@ -197,6 +167,7 @@
 
 <script>
 import Vuetify from 'vuetify/lib';
+import router from "../router";
 
 export default {
   name: 'Login',
@@ -212,6 +183,11 @@ export default {
      'Qual o nome do seu primeiro animal de estimação?', 
      'Qual sua banda predileta na adolescência?'],
   }),
+  methods: {
+      loginPage() {
+        router.push({ name: "login" }) ;
+      }
+  }
 };
 </script>
 
@@ -239,6 +215,14 @@ export default {
   padding-top: 20px;
 }
 
+#card-header {
+  padding-top: 5px;
+  padding-left: 25px;
+  margin-bottom: 0px;
+  color: #D81B60;
+  background-color: #EEEEEE; 
+}
+
 #btn-new-user {
   margin: 0px !important;
 }
@@ -252,7 +236,7 @@ export default {
 }
 
 .form-padding {
-    padding: 10px;
+    padding: 10px 35px 10px 10px;
 }
 
 .text-color {
