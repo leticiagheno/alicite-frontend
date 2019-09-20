@@ -13,7 +13,7 @@
         <v-btn icon>
           <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
         </v-btn>
-      </v-app-bar>
+    </v-app-bar>
       <router-view />
       
       <v-footer color="grey lighten-3">
@@ -35,7 +35,7 @@ export default {
   vuetify: new Vuetify(),
   methods: {
     loginPage() {
-      router.push({ name: "login" }) ;
+      router.push({ name: "loginCliente" }) ;
     },
     homePage(){
       router.push({ name: "homepage" }) ;
@@ -64,6 +64,19 @@ export default {
 
 #font-app {
  font-family: 'Delius', cursive;
+}
+
+:-webkit-scrollbar-track {
+    background-color: #F4F4F4;
+}
+
+:-webkit-scrollbar {
+    width: 6px;
+    background: #F4F4F4;
+}
+
+:-webkit-scrollbar-thumb {
+    background: #dad7d7;
 }
 
 </style>

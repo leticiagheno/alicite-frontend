@@ -1,7 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
 import SignUp from "./pages/SignUp.vue";
-import Login from "./pages/Login.vue";
+import RegisterProduct from "./pages/RegisterProduct.vue";
+import RecoverPass from "./pages/RecoverPass.vue";
+import LoginCliente from "./pages/LoginCliente.vue";
+import LoginEquipe from "./pages/LoginEquipe.vue";
 import HomePage from "./pages/HomePage.vue";
 import About from "./pages/About.vue";
 
@@ -15,9 +18,14 @@ export default new Router({
       component: HomePage
     },
     {
-      path: "/login",
-      name: "login",
-      component: Login
+      path: "/loginCliente",
+      name: "loginCliente",
+      component: LoginCliente
+    },
+    {
+      path: "/loginEquipe",
+      name: "loginEquipe",
+      component: LoginEquipe
     },
     {
       path: "/signup",
@@ -28,6 +36,16 @@ export default new Router({
       path: "/sobre",
       name: "about",
       component: About
+    },
+    {
+      path: "/recuperarSenha",
+      name: "recoverPass",
+      component: RecoverPass
+    },
+    {
+      path: "/registrarProduto",
+      name: "registerProduct",
+      component: RegisterProduct
     },
 
   ]

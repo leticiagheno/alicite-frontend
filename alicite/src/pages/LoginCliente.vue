@@ -7,7 +7,7 @@
     <v-list-item id="card-header" class="d-flex justify-space-between">
       <v-row>
         <v-icon color="pink darken-1" x-large>mdi-hanger</v-icon>
-        <h2 id="card-title">Login Cliente</h2>
+        <h2 id="card-title">Login cliente</h2>
       </v-row>
       <v-btn class="ma-2" @click="signUpPage" id="btn-new-user" color="pink darken-1" icon>
         Registrar
@@ -16,7 +16,7 @@
     <v-card-text id="card-text">
       <v-form>
         <v-text-field
-          label="E-mail"
+          label="Nome de Usuário"
           color="pink darken-1"
           outlined
           rounded

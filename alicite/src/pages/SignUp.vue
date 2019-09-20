@@ -23,6 +23,7 @@
                             <v-text-field
                                 label="Nome"
                                 color="pink darken-1"
+                                v-model="nome"
                                 outlined
                                 rounded
                                 required
@@ -30,6 +31,7 @@
                             <v-text-field
                                 label="Telefone"
                                 color="pink darken-1"
+                                v-model="telefone"
                                 outlined
                                 rounded
                                 required
@@ -48,6 +50,7 @@
                             <v-text-field
                                 label="Rua"
                                 color="pink darken-1"
+                                v-model="rua"
                                 outlined
                                 rounded
                                 required
@@ -57,6 +60,7 @@
                                     class="input-padding"> 
                                     <v-text-field
                                         label="Número"
+                                        v-model="numero"
                                         color="pink darken-1"
                                         outlined
                                         rounded
@@ -67,6 +71,7 @@
                                     class="input-padding"> 
                                     <v-text-field
                                         label="Bairro"
+                                        v-model="bairro"
                                         color="pink darken-1"
                                         outlined
                                         rounded
@@ -79,6 +84,7 @@
                                     class="input-padding"> 
                                     <v-text-field
                                         label="Cidade"
+                                        v-model="cidade"
                                         color="pink darken-1"
                                         outlined
                                         rounded
@@ -89,6 +95,7 @@
                                     class="input-padding"> 
                                     <v-text-field
                                         label="Estado"
+                                        v-model="estado"
                                         color="pink darken-1"
                                         outlined
                                         rounded
@@ -99,6 +106,7 @@
                                     class="input-padding"> 
                                     <v-text-field
                                         label="País"
+                                        v-model="pais"
                                         color="pink darken-1"
                                         outlined
                                         rounded
@@ -119,7 +127,8 @@
                      <v-stepper-content class="stepper-padding" step="3">
                         <v-form class="form-padding">
                             <v-text-field
-                                label="E-mail"
+                                label="Email"
+                                v-model="email"
                                 color="pink darken-1"
                                 outlined
                                 rounded
@@ -127,6 +136,7 @@
                             />
                             <v-text-field
                                 label="Senha"
+                                v-model="senha"
                                 type="Password"
                                 color="pink darken-1"
                                 outlined
@@ -136,6 +146,7 @@
                              <v-select
                                 :items="items"
                                 color="pink darken-1"
+                                v-model="pergunta"
                                 outlined
                                 rounded
                                 required
@@ -143,6 +154,7 @@
                             ></v-select>
                             <v-text-field
                                 label="Resposta"
+                                v-model="resposta"
                                 color="pink darken-1"
                                 outlined
                                 rounded
@@ -152,14 +164,12 @@
                                  <v-btn
                                     text
                                     color="pink lighten-1"
-                                    @click="e1 = 1"
+                                    @click="register"
                                 > Registrar
                                 </v-btn>
                             </v-row>
                         </v-form>
-                    </v-stepper-content>
-
-                  
+                    </v-stepper-content>                  
             </v-stepper>
         </v-card>
     </v-container>
@@ -168,6 +178,7 @@
 <script>
 import Vuetify from 'vuetify/lib';
 import router from "../router";
+import axios from "axios";
 
 export default {
   name: 'Login',
@@ -178,6 +189,18 @@ export default {
     raised: true,
     width: 750,
     e1: 0,
+    nome: '',
+    telefone: '',
+    rua: '',
+    numero: '',
+    bairro: '',
+    cidade: '',
+    estado: '',
+    pais: '',
+    email: '',
+    senha: '',
+    pergunta: '',
+    resposta: '',
     items: 
     ['Onde sua mãe nasceu?',
      'Qual o nome do seu primeiro animal de estimação?', 
@@ -185,7 +208,25 @@ export default {
   }),
   methods: {
       loginPage() {
-        router.push({ name: "login" }) ;
+        router.push({ name: "loginCliente" }) ;
+      },
+      register() {
+          axios.post("http://localhost:3000/login/signup/cliente", { 
+            nome: this.nome,
+            telefone: this.telefone,
+            endereco: {
+                rua: this.rua,
+                numero: this.numero,
+                bairro: this.bairro,
+                cidade: this.cidade,
+                estado: this.estado,
+                pais: this.pais,
+            },
+            email: this.email,
+            senha: this.senha,
+            pergunta: this.pergunta,
+            resposta: this.resposta,
+        })
       }
   }
 };
