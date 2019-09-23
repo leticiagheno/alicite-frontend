@@ -1,48 +1,35 @@
 <template>
-  <v-container fill-height> 
-    <v-card
-      class="mx-auto"
-      :width="width"
-    >
-    <v-list-item id="card-header" class="d-flex justify-space-between">
-      <v-row>
-        <v-icon color="pink darken-1" x-large>mdi-hanger</v-icon>
-        <h2 id="card-title">Login Equipe</h2>
-      </v-row>
-    </v-list-item>
-    <v-card-text id="card-text">
-      <v-form>
-        <v-text-field
-          label="Nome de Usuário"
-          color="pink darken-1"
-          outlined
-          rounded
-          required
-        />
-        <v-text-field
-          label="Senha"
-          type="Password"
-          color="pink darken-1"
-          outlined
-          rounded
-          required
-        />
-      </v-form>
-        <div class="d-flex justify-space-between align-center">
+  <v-container fill-height>
+    <v-card class="mx-auto" :width="width">
+      <v-list-item id="card-header" class="d-flex justify-space-between">
+        <v-row>
+          <v-icon color="pink darken-1" x-large>mdi-hanger</v-icon>
+          <h2 id="card-title">Login Equipe</h2>
+        </v-row>
+      </v-list-item>
+      <v-card-text id="card-text">
+        <v-form>
+          <v-text-field
+            label="E-mail"
+            v-model="email"
+            color="pink darken-1"
+            outlined
+            rounded
+            required
+          />
+          <v-text-field
+            v-model="senha"
+            label="Senha"
+            type="Password"
+            color="pink darken-1"
+            outlined
+            rounded
+            required
+          />
+        </v-form>
+        <div class="d-flex justify-end align-center">
           <div>
-            <v-btn
-              text
-              id="btn-forget-pass"
-              color="pink darken-1"
-            > Esqueci minha senha
-          </v-btn>
-          </div>
-          <div>
-            <v-btn
-              text
-              color="pink lighten-1"
-            > Entrar
-          </v-btn>
+            <v-btn @click="login" text color="pink lighten-1">Entrar</v-btn>
           </div>
         </div>
       </v-card-text>
@@ -51,43 +38,58 @@
 </template>
 
 <script>
-import Vuetify from 'vuetify/lib';
+import Vuetify from "vuetify/lib";
 import router from "../router";
+import axios from "axios";
+import { EventBus } from "../main";
 
 export default {
-  name: 'Login',
+  name: "Login",
   vuetify: new Vuetify(),
   data: () => ({
     media: true,
     actions: true,
     raised: true,
-    width: 500
+    width: 500,
+    email: "",
+    senha: ""
   }),
   methods: {
-      signUpPage() {
-        router.push({ name: "signup" }) ;
-      }
+    login() {
+      axios
+        .post("http://localhost:3000/login/signin/equipe", {
+          email: this.email,
+          senha: this.senha
+        })
+        .then(response => {
+          localStorage.setItem("access-token", response.data);
+          EventBus.$emit("openEquipe");
+          router.push({ name: "equipe" });
+        })
+        .catch(() =>
+          alert("Erro ao realizar login. Verifique seu e-mail e senha.")
+        );
+    }
   }
 };
 </script>
 
 <style scoped>
-
 #page {
-   overflow-y: auto;
+  overflow-y: auto;
 }
 
 #card-header {
   padding: 10px 30px;
   margin-bottom: 0px;
-  color: #D81B60;
-  background-color: #EEEEEE;
+  color: #d81b60;
+  background-color: #eeeeee;
 }
 
 #card-title {
   padding: 5px 5px 0px 5px;
   margin-bottom: 0px;
-  color: #D81B60;
+  color: #d81b60;
 }
 
 #card-layout {
@@ -102,5 +104,4 @@ export default {
   padding-right: 35px;
   margin: 0px !important;
 }
-
 </style>

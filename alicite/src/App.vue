@@ -1,82 +1,143 @@
 <template>
-  <v-app
-    color="grey lighten-5"
-    id="font-app"
-  >
-    <v-app-bar
-      color="grey lighten-3"
-      dense
-    >
+  <v-app color="grey lighten-5" id="font-app">
+    <v-app-bar color="grey lighten-3" dense>
       <v-toolbar-title @click="homePage" id="tool-title">Alicitê</v-toolbar-title>
-        <div class="flex-grow-1"></div>
-        <v-btn @click="loginPage" text color="pink lighten-1">Login</v-btn>
-        <v-btn icon>
-          <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
-        </v-btn>
+      <div class="flex-grow-1"></div>
+      <v-btn
+        @click="loginClientePage"
+        v-if="showLoginCliente"
+        v-bind:title="cliente"
+        text
+        color="pink lighten-1"
+      >Login</v-btn>
+      <v-btn @click="loginEquipePage" v-if="showLoginEquipe" v-bind:title="equipe" icon>
+        <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
+      </v-btn>
+      <v-btn @click="newProduct" v-if="showNewProduct" text color="pink lighten-1">Novo produto</v-btn>
+      <v-btn @click="membros" v-if="showMembros" text color="pink lighten-1">Membros</v-btn>
+      <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1">Logout</v-btn>
     </v-app-bar>
-      <router-view />
-      
-      <v-footer color="grey lighten-3">
-        <v-icon color="pink lighten-1" id="hanger">mdi-information</v-icon> 
-        <a @click="aboutPage" class="footer-text">Sobre</a>
-        <div class="flex-grow-1"></div>
-        <v-icon color="pink lighten-1" id="hanger">mdi-hanger</v-icon>
-        <div><a class="footer-text" href="https://github.com/leticiagheno"> &copy; Letícia Gheno Baldissarelli</a></div>
-      </v-footer>
+    <router-view />
+
+    <v-footer color="grey lighten-3">
+      <v-icon color="pink lighten-1" id="hanger">mdi-information</v-icon>
+      <a @click="aboutPage" class="footer-text">Sobre</a>
+      <div class="flex-grow-1"></div>
+      <v-icon color="pink lighten-1" id="hanger">mdi-hanger</v-icon>
+      <div>
+        <a
+          class="footer-text"
+          href="https://github.com/leticiagheno"
+        >&copy; Letícia Gheno Baldissarelli</a>
+      </div>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import Vuetify from 'vuetify/lib';
+import Vuetify from "vuetify/lib";
 import router from "./router";
+import { EventBus } from "../src/main";
 
 export default {
-  name: 'App',
+  name: "App",
   vuetify: new Vuetify(),
+  data: () => ({
+    showLoginEquipe: true,
+    showLoginCliente: true,
+    showLogoff: false,
+    showNewProduct: false,
+    showMembros: false,
+    equipe: "Login da equipe",
+    cliente: "Login comercial"
+  }),
+  created() {
+    EventBus.$on("openCliente", () => {
+      this.showLoginEquipe = false;
+      this.showLoginCliente = false;
+      this.showLogoff = true;
+      this.showNewProduct = false;
+      this.showMembros = false;
+    });
+    EventBus.$on("openEquipe", () => {
+      this.showLoginEquipe = false;
+      this.showLoginCliente = false;
+      this.showLogoff = true;
+      this.showNewProduct = true;
+      this.showMembros = true;
+    });
+    EventBus.$on("onlyLogin", () => {
+      this.showLoginEquipe = true;
+      this.showLoginCliente = true;
+      this.showLogoff = false;
+      this.showNewProduct = false;
+      this.showMembros = false;
+    });
+  },
   methods: {
-    loginPage() {
-      router.push({ name: "loginCliente" }) ;
+    loginClientePage() {
+      this.showLoginEquipe = true;
+      this.showLoginCliente = false;
+      router.push({ name: "loginCliente" });
     },
-    homePage(){
-      router.push({ name: "homepage" }) ;
+    loginEquipePage() {
+      this.showLoginEquipe = false;
+      this.showLoginCliente = true;
+      router.push({ name: "loginEquipe" });
     },
-    aboutPage(){
-      router.push({ name: "about" }) ;
+    logoff() {
+      this.showLoginEquipe = true;
+      this.showLoginCliente = true;
+      this.showLogoff = false;
+      this.showNewProduct = false;
+      this.showMembros = false;
+      localStorage.setItem("access-token", "");
+      router.push({ name: "homepage" });
+    },
+    homePage() {
+      router.push({ name: "homepage" });
+    },
+    aboutPage() {
+      router.push({ name: "about" });
+    },
+    membros() {
+      router.push({ name: "equipe" });
+    },
+    newProduct() {
+      router.push({ name: "registerProduct" });
     }
   }
 };
 </script>
 
 <style scoped>
-
 #tool-title {
-  color: #D81B60;
-  font-family: 'Sacramento', cursive;
+  color: #d81b60;
+  font-family: "Sacramento", cursive;
   margin-top: 5px;
   font-size: 2.25rem;
   cursor: pointer;
 }
 
 .footer-text {
-  color: #D81B60;
+  color: #d81b60;
   padding-left: 5px;
 }
 
 #font-app {
- font-family: 'Delius', cursive;
+  font-family: "Delius", cursive;
 }
 
 :-webkit-scrollbar-track {
-    background-color: #F4F4F4;
+  background-color: #f4f4f4;
 }
 
 :-webkit-scrollbar {
-    width: 6px;
-    background: #F4F4F4;
+  width: 6px;
+  background: #f4f4f4;
 }
 
 :-webkit-scrollbar-thumb {
-    background: #dad7d7;
+  background: #dad7d7;
 }
-
 </style>

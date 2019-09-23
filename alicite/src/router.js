@@ -2,9 +2,11 @@ import Vue from "vue";
 import Router from "vue-router";
 import SignUp from "./pages/SignUp.vue";
 import RegisterProduct from "./pages/RegisterProduct.vue";
+import RegisterEquipe from "./pages/RegisterEquipe.vue";
 import RecoverPass from "./pages/RecoverPass.vue";
 import LoginCliente from "./pages/LoginCliente.vue";
 import LoginEquipe from "./pages/LoginEquipe.vue";
+import MembrosEquipe from "./pages/MembrosEquipe.vue";
 import HomePage from "./pages/HomePage.vue";
 import About from "./pages/About.vue";
 
@@ -47,6 +49,15 @@ export default new Router({
       name: "registerProduct",
       component: RegisterProduct
     },
-
+    {
+      path: "/equipe/novoMembro",
+      name: "novoMembro",
+      component: RegisterEquipe
+    },
+    {
+      path: "/equipe",
+      name: "equipe",
+      component: MembrosEquipe
+    }
   ]
 });
