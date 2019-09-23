@@ -16,8 +16,9 @@
     <v-card-text id="card-text">
       <v-form>
         <v-text-field
-          label="Nome de Usuário"
+          label="E-mail"
           color="pink darken-1"
+          v-model="email"
           outlined
           rounded
           required
@@ -25,6 +26,7 @@
         <v-text-field
           label="Senha"
           type="Password"
+          v-model="senha"
           color="pink darken-1"
           outlined
           rounded
@@ -37,6 +39,7 @@
               text
               id="btn-forget-pass"
               color="pink darken-1"
+              @click="forgetPass"
             > Esqueci minha senha
           </v-btn>
           </div>
@@ -44,6 +47,7 @@
             <v-btn
               text
               color="pink lighten-1"
+              @click="login"
             > Entrar
           </v-btn>
           </div>
@@ -56,6 +60,7 @@
 <script>
 import Vuetify from 'vuetify/lib';
 import router from "../router";
+import axios from "axios";
 
 export default {
   name: 'Login',
@@ -64,11 +69,26 @@ export default {
     media: true,
     actions: true,
     raised: true,
-    width: 500
+    width: 500,
+    email: '',
+    senha: ''
   }),
   methods: {
       signUpPage() {
-        router.push({ name: "signup" }) ;
+        router.push({ name: "signup" });
+      }, 
+      forgetPass(){
+        router.push({ name: "recoverPass" });
+      },
+      login() {
+          axios.post("http://localhost:3000/login/signin/cliente", { 
+            email: this.email,
+            senha: this.senha,
+        }).then((response) => {
+          localStorage.setItem("access-token", response.data);
+          router.push({ name: "registerProduct" });
+        }).catch(() => 
+        alert("Erro ao realizar login. Verifique seu e-mail e senha."))       
       }
   }
 };

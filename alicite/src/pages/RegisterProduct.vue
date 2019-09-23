@@ -9,15 +9,13 @@
         <v-icon color="pink darken-1" x-large>mdi-hanger</v-icon>
         <h2 id="card-title">Novo Produto</h2>
       </v-row>
-      <v-btn class="ma-2" @click="signUpPage" id="btn-new-user" color="pink darken-1" icon>
-        Voltar
-      </v-btn>
     </v-list-item>
     <v-card-text id="card-text">
       <v-form>
         <v-text-field
           label="Nome"
           color="pink darken-1"
+          v-model="nome"
           outlined
           rounded
           required
@@ -25,6 +23,7 @@
         <v-textarea
           label="Descrição"
           color="pink darken-1"
+          v-model="descricao"
           outlined
           rounded
           required
@@ -32,6 +31,7 @@
         <v-file-input
           label="Foto"
           color="pink darken-1"
+          id="foto"
           outlined
           multiple
           rounded
@@ -39,7 +39,7 @@
         />
         <v-row class="d-flex justify-end">
           <v-btn
-            @click="searchQuestion"
+            @click="saveProduct"
             text
             color="pink darken-1"
           > Salvar
@@ -53,7 +53,12 @@
 
 <script>
 import Vuetify from 'vuetify/lib';
-import router from "../router";
+import axios from "axios";
+
+var config = {
+    headers: { "access-token": localStorage.getItem("access-token") }
+  };
+
 
 export default {
   name: 'RecoverPass',
@@ -62,12 +67,36 @@ export default {
     media: true,
     actions: true,
     raised: true,
-    width: 800
+    width: 800,
+    nome: '',
+    descricao: ''
   }),
   methods: {
-      signUpPage() {
-        router.push({ name: "signup" }) ;
+      saveProduct() {
+          axios.post("http://localhost:3000/produto/cadastrar", { 
+            nome: this.nome,
+            descricao: this.descricao
+          }, config).then(() => {
+            alert("Produto cadastrado com sucesso!")
+          }).catch(() => 
+          alert("Erro ao cadastrar produto!"))
       }
+  },   
+  beforeMount() {
+    var config = {
+      headers: { "access-token": localStorage.getItem("access-token") }
+    };
+    var accessToken = localStorage.getItem("access-token");
+    var vm = this;
+    jwt.verify(accessToken, "desafio bossaBox", function(err) {
+      if (err) {
+        router.push({ name: "loginCliente" });
+      } else {
+        axios
+          .get("http://localhost:3000/tools", config)
+          .then(response => {vm.results = response.data.result})
+      }
+    });
   }
 };
 </script>

@@ -214,19 +214,22 @@ export default {
           axios.post("http://localhost:3000/login/signup/cliente", { 
             nome: this.nome,
             telefone: this.telefone,
-            endereco: {
+            endereco: [
+                {
                 rua: this.rua,
                 numero: this.numero,
                 bairro: this.bairro,
                 cidade: this.cidade,
                 estado: this.estado,
                 pais: this.pais,
-            },
+            }],
             email: this.email,
             senha: this.senha,
             pergunta: this.pergunta,
             resposta: this.resposta,
-        })
+        }).then(() => {
+            router.push({ name: "loginCliente" });
+        });
       }
   }
 };

@@ -18,6 +18,7 @@
         <v-text-field
           label="Email"
           color="pink darken-1"
+          v-model="email"
           outlined
           rounded
           required
@@ -38,12 +39,13 @@
               outlined
               readonly
               rounded
+              v-model="question"
               label="Pergunta de segurança"
           ></v-text-field>
           <v-text-field
               color="pink darken-1"
+              v-model="resposta"
               outlined
-              readonly
               rounded
               required
               label="Resposta"
@@ -60,8 +62,8 @@
         <div v-if="showPass" id="div-question">
             <v-text-field
               color="pink darken-1"
+              v-model="novaSenha"
               outlined
-              readonly
               rounded
               label="Nova senha"
           ></v-text-field>
@@ -69,6 +71,7 @@
             <v-btn
               @click="savePass"
               text
+              password
               color="pink darken-1"
             > Enviar
             </v-btn>
@@ -82,6 +85,7 @@
 <script>
 import Vuetify from 'vuetify/lib';
 import router from "../router";
+import axios from "axios";
 
 export default {
   name: 'RecoverPass',
@@ -93,22 +97,44 @@ export default {
     width: 500,
     showEmail: true,
     showQuestion: false,
-    showPass: false
-  }),
+    showPass: false,
+    question: '',
+    resposta: '',
+    respostaCorreta: '',
+    email: '',
+    novaSenha: ''
+    }),
   methods: {
       signUpPage() {
         router.push({ name: "signup" }) ;
       },
       searchQuestion() {
-        this.showQuestion = true;
+          axios.post("http://localhost:3000/login/recoverPass", { 
+            email: this.email
+          }).then((response) => {
+            this.question = response.data.pergunta;
+            this.respostaCorreta = response.data.resposta;
+            this.showQuestion = true;
+          }).catch(() => 
+          alert("Erro ao realizar login. Verifique seu e-mail e senha."))
       },
       verifyQuestion() {
-        this.showPass = true;
-        this.showEmail = false,
-        this.showQuestion = false;
+        if (this.respostaCorreta === this.resposta) {
+          this.showPass = true;
+          this.showEmail = false,
+          this.showQuestion = false;
+        } else {
+          alert("Resposta incorreta");
+        }
       }, 
       savePass() {
-
+         axios.post("http://localhost:3000/login/changePass", { 
+            email: this.email,
+            senha: this.novaSenha,
+          }).then(() => {
+            router.push({ name: "loginCliente" });
+          }).catch(() => 
+          alert("Erro ao realizar troca de senha."))   
       }
   }
 };
