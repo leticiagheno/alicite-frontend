@@ -25,15 +25,7 @@
             rounded
             required
           />
-          <v-file-input
-            label="Foto"
-            color="pink darken-1"
-            id="foto"
-            outlined
-            multiple
-            rounded
-            required
-          />
+          <input type="file" @change="loadTextFromFile">
           <v-row class="d-flex justify-end">
             <v-btn @click="saveProduct" text color="pink darken-1">Salvar</v-btn>
           </v-row>
@@ -57,9 +49,18 @@ export default {
     raised: true,
     width: 800,
     nome: "",
-    descricao: ""
+    descricao: "",
+    foto: ''
   }),
   methods: {
+    loadTextFromFile(ev) {
+      const file = ev.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.foto = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
     saveProduct() {
       var config = {
         headers: { "access-token": localStorage.getItem("access-token") }
@@ -69,7 +70,8 @@ export default {
           "http://localhost:3000/produto/cadastrar",
           {
             nome: this.nome,
-            descricao: this.descricao
+            descricao: this.descricao,
+            foto: this.foto
           },
           config
         )
