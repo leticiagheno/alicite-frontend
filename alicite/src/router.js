@@ -9,6 +9,7 @@ import LoginEquipe from "./pages/LoginEquipe.vue";
 import MembrosEquipe from "./pages/MembrosEquipe.vue";
 import HomePage from "./pages/HomePage.vue";
 import About from "./pages/About.vue";
+import ListProduct from "./pages/ListProduct.vue";
 
 Vue.use(Router);
 
@@ -58,6 +59,11 @@ export default new Router({
       path: "/equipe",
       name: "equipe",
       component: MembrosEquipe
+    },
+    {
+      path: "/produtos",
+      name: "produtos",
+      component: ListProduct
     }
   ]
 });

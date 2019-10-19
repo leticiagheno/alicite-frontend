@@ -67,7 +67,7 @@ export default {
       };
       axios
         .post(
-          "http://localhost:3000/produto/cadastrar",
+          "http://localhost:3000/produto",
           {
             nome: this.nome,
             descricao: this.descricao,
