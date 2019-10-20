@@ -45,7 +45,7 @@
 
 <script>
 import Vuetify from "vuetify/lib";
-import router from "../router";
+import router from "../../router";
 import axios from "axios";
 
 export default {

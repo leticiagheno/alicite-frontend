@@ -13,7 +13,7 @@
       <v-btn @click="loginEquipePage" v-if="showLoginEquipe" v-bind:title="equipe" icon>
         <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
       </v-btn>
-      <v-btn @click="newProduct" v-if="showNewProduct" text color="pink lighten-1">Novo produto</v-btn>
+      <v-btn @click="produtos" v-if="produtos" text color="pink lighten-1">Produtos</v-btn>
       <v-btn @click="membros" v-if="showMembros" text color="pink lighten-1">Membros</v-btn>
       <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1">Logout</v-btn>
     </v-app-bar>
@@ -56,12 +56,13 @@ export default {
       this.showLoginEquipe = false;
       this.showLoginCliente = false;
       this.showLogoff = true;
-      this.showNewProduct = false;
+      this.showProdutos = false;
       this.showMembros = false;
     });
     EventBus.$on("openEquipe", () => {
       this.showLoginEquipe = false;
       this.showLoginCliente = false;
+      this.showProdutos = true;
       this.showLogoff = true;
       this.showNewProduct = true;
       this.showMembros = true;
@@ -69,8 +70,8 @@ export default {
     EventBus.$on("onlyLogin", () => {
       this.showLoginEquipe = true;
       this.showLoginCliente = true;
+      this.showProdutos = true;
       this.showLogoff = false;
-      this.showNewProduct = false;
       this.showMembros = false;
     });
   },
@@ -88,8 +89,8 @@ export default {
     logoff() {
       this.showLoginEquipe = true;
       this.showLoginCliente = true;
+      this.showProdutos = false;
       this.showLogoff = false;
-      this.showNewProduct = false;
       this.showMembros = false;
       localStorage.setItem("access-token", "");
       router.push({ name: "homepage" });
@@ -103,8 +104,8 @@ export default {
     membros() {
       router.push({ name: "equipe" });
     },
-    newProduct() {
-      router.push({ name: "registerProduct" });
+    produtos() {
+      router.push({ name: "produtos" });
     }
   }
 };

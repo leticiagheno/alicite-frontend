@@ -1,7 +1,9 @@
 <template>
     <v-card
-        max-width="344"
-        class="mx-auto"
+        max-width="400"
+        height="400"
+        class="mx-auto" 
+        @click="openProductPage"
     >
     <v-img
         class="white--text"
@@ -18,13 +20,22 @@
 
 <script>
 import Vuetify from 'vuetify/lib';
+import router from "../router";
 
 export default {
   name: 'CardProduct',
   props: ['produto'],
   vuetify: new Vuetify(),
-  mounted() {
-      console.log(produto);
+  methods: {
+    openProductPage(){
+        router.push( 
+        { 
+            name: "produto", 
+            params: {
+                produto: this.produto
+            }
+        });
+    }
   }
 };
 </script>

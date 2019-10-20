@@ -39,9 +39,9 @@
 
 <script>
 import Vuetify from "vuetify/lib";
-import router from "../router";
+import router from "../../router";
 import axios from "axios";
-import { EventBus } from "../main";
+import { EventBus } from "../../main";
 
 export default {
   name: "Login",

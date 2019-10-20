@@ -85,7 +85,7 @@ export default {
         .then(response => {
           localStorage.setItem("access-token", response.data);
           EventBus.$emit("openCliente");
-          router.push({ name: "homepage" });
+          router.push({ name: "produtosCliente" });
         })
         .catch(() =>
           alert("Erro ao realizar login. Verifique seu e-mail e senha.")

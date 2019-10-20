@@ -1,6 +1,9 @@
 <template>
-    <v-row fill-height> 
-          <vue-chunks :items="produtos" :columns="4" chunk-class="row mb-4" item-class="col-4">
+    <v-row fill-height class="list"> 
+      <div class="d-flex align-end flex-column">
+        <v-btn @click="novoProduto"> Novo Produto </v-btn>
+      </div>
+          <vue-chunks :items="produtos" :columns="3" chunk-class="row mb-4" item-class="col-4">
               <template slot-scope="produto">
               <CardProduct  
                 v-bind:key="produto.id" 
@@ -15,6 +18,7 @@ import Vuetify from 'vuetify/lib';
 import axios from "axios";
 import CardProduct from "./CardProduct.vue";
 import _ from 'lodash';
+import router from "../router";
 
 export default {
   name: 'ListProduct',
@@ -31,6 +35,14 @@ export default {
       produtos: []
     }
   },
+  methods: {
+    novoProduto() {
+       router.push( 
+        { 
+            name: "registerProduct",
+        });
+    }
+  },
   vuetify: new Vuetify(),
   beforeMount() {
     var config = {
@@ -44,6 +56,8 @@ export default {
 </script>
 
 <style scoped>
-
+.list {
+  padding: 5% 20%;
+}
 
 </style>

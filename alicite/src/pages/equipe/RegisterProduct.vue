@@ -9,6 +9,15 @@
       </v-list-item>
       <v-card-text id="card-text">
         <v-form>
+          <div>
+            <div id="box" class="d-flex align-end flex-column" >
+             <v-img max-height="100%" :src="this.foto"/>
+              <label class="upload">
+                <v-icon color="pink darken-1" class="custom-file-upload" large>mdi-camera</v-icon>
+                <input type="file" @change="loadTextFromFile"/>
+              </label>
+            </div>
+          </div>
           <v-text-field
             label="Nome"
             color="pink darken-1"
@@ -25,7 +34,6 @@
             rounded
             required
           />
-          <input type="file" @change="loadTextFromFile">
           <v-row class="d-flex justify-end">
             <v-btn @click="saveProduct" text color="pink darken-1">Salvar</v-btn>
           </v-row>
@@ -38,7 +46,7 @@
 <script>
 import Vuetify from "vuetify/lib";
 import axios from "axios";
-import router from "../router";
+import router from "../../router";
 
 export default {
   name: "RecoverPass",
@@ -77,7 +85,7 @@ export default {
         )
         .then(() => {
           alert("Produto cadastrado com sucesso!");
-          router.push({ name: "homepage" });
+          router.push({ name: "produtos" });
         })
         .catch(() => alert("Erro ao cadastrar produto!"));
     }
@@ -93,6 +101,34 @@ export default {
 </script>
 
 <style scoped>
+
+.upload {
+  z-index: 1000;
+  position: absolute;
+}
+
+#box {
+  z-index: 100;
+  position: relative;
+  float: left;
+  height: 250px;
+  width: 350px;
+  margin: 0px 10px 10px 10px;
+  padding: 10px;
+  border: solid;
+  border-color: #d81b60;
+  border-radius: 10px;
+  background: transparent;
+}
+
+.custom-file-upload {
+  padding-bottom: 15px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
 #page {
   overflow-y: auto;
 }
@@ -126,4 +162,5 @@ export default {
 #input-question {
   margin: 15px 0px;
 }
+
 </style>

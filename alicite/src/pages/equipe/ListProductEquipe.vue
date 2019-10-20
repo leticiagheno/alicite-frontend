@@ -4,33 +4,58 @@
       <v-list-item id="card-header" class="d-flex justify-space-between align-baseline">
         <v-row>
           <v-icon color="pink darken-5">mdi-hanger</v-icon>
-          <h3 id="card-title">Membros da equipe</h3>
+          <h3 id="card-title">Produtos Cadastrados</h3>
         </v-row>
-        <v-btn @click="novoMembro" id="btn-new-user" color="pink darken-1" icon>
+        <v-btn @click="novoProduto" id="btn-new-user" color="pink darken-1" icon>
           <v-icon color="pink darken-5">mdi-account-plus</v-icon>
         </v-btn>
       </v-list-item>
-      <v-data-table hide-default-footer :headers="headers" :items="equipe"></v-data-table>
+        <v-data-table 
+            hide-default-footer 
+            :headers="headers" 
+            :items="equipe">  
+              <template v-slot:item.action="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-border-color
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+        </v-data-table>
     </v-card>
   </v-container>
 </template>
 
 <script>
 import Vuetify from "vuetify/lib";
-import router from "../router";
+import router from "../../router";
 import * as jwt from "jsonwebtoken";
 import axios from "axios";
 
 export default {
-  name: "Login",
+  name: "ListProductEquipe",
   vuetify: new Vuetify(),
   data: () => ({
     media: true,
     actions: true,
     raised: true,
-    width: 750,
+    width: 900,
     equipe: [],
     headers: [
+      {
+        text: "Código",
+        align: "center",
+        sortable: false,
+        value: "id"
+      },
       {
         text: "Nome",
         align: "center",
@@ -38,25 +63,20 @@ export default {
         value: "nome"
       },
       {
-        text: "Cargo",
+        text: "Descriçao",
         align: "center",
         sortable: false,
-        value: "cargo"
+        value: "descricao"
       },
-      {
-        text: "Email",
-        align: "center",
-        sortable: false,
-        value: "email"
-      }
+      { text: 'Ações', value: 'action', sortable: false },
     ]
   }),
   methods: {
-    novoMembro() {
-      router.push({ name: "novoMembro" });
+    novoProduto() {
+      router.push({ name: "registerProduct" });
     },
     editItem(item) {
-      alert(item);
+      router.push({ name: "editProduto", params: { prod: item }});
     },
     deleteItem(item) {
       alert(item);
@@ -73,7 +93,7 @@ export default {
     } else {
       var decoded = jwt.decode(accessToken);
       if (decoded.aud === "AliciteAudience") {
-        axios.get("http://localhost:3000/equipe", config).then(response => {
+        axios.get("http://localhost:3000/produto", config).then(response => {
           this.equipe = response.data;
         });
       } else {
