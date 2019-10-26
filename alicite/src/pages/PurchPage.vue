@@ -130,10 +130,16 @@
         <v-col md="2">
             <v-row>
                 <v-img :src="produto.foto"/>
-                <span>{{produto.nome}}</span>
+            </v-row>
+            <v-row>
+                <h4>{{produto.nome}}</h4>
+            </v-row>
+            <v-row class="descricao">
+                <span> {{produto.descricao}}</span>
             </v-row>
             <v-row class="d-flex flex-row-reverse align-self-end">
-                <v-btn> Salvar </v-btn>
+                <v-btn class="buttons" @click="save"> Salvar  </v-btn>
+                <v-btn class="buttons" @click="back"> Voltar </v-btn>
             </v-row>
         </v-col>
     </v-container>
@@ -161,10 +167,25 @@ export default {
     larguraPanturrilha: '',
     observacoes: ''
   }),
+  methods: {
+      save() {
+      },
+      back() {
+        router.push({ name: "produtosCliente" });
+      }
+  }
 };
 </script>
 
 <style scoped>
+
+.buttons {
+    margin: 5px;
+}
+
+.descricao {
+    margin-bottom: 10px;
+}
 
 #page {
   overflow-y: auto;

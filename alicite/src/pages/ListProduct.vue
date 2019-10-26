@@ -1,15 +1,21 @@
 <template>
     <v-row fill-height class="list"> 
-      <div class="d-flex align-end flex-column">
-        <v-btn @click="novoProduto"> Novo Produto </v-btn>
+      <div v-if="!loading">
+        <vue-chunks 
+          :items="produtos" 
+          :columns="3" 
+          chunk-class="row mb-4" 
+          item-class="col-4">
+            <template slot-scope="produto">
+            <CardProduct  
+              v-bind:key="produto.id" 
+              :produto ="produto.item" />
+          </template>
+        </vue-chunks>
       </div>
-          <vue-chunks :items="produtos" :columns="3" chunk-class="row mb-4" item-class="col-4">
-              <template slot-scope="produto">
-              <CardProduct  
-                v-bind:key="produto.id" 
-                :produto ="produto.item" />
-            </template>
-          </vue-chunks>
+        <v-overlay color="#eeeeee" opacity="1.00" :value="loading">
+          <v-progress-circular color="pink" indeterminate size="64"></v-progress-circular>
+        </v-overlay>
     </v-row>
 </template>
 
@@ -32,15 +38,8 @@ export default {
   },
   data() {
     return {
-      produtos: []
-    }
-  },
-  methods: {
-    novoProduto() {
-       router.push( 
-        { 
-            name: "registerProduct",
-        });
+      produtos: [],
+      loading: true
     }
   },
   vuetify: new Vuetify(),
@@ -50,7 +49,7 @@ export default {
     };
     axios
       .get("http://localhost:3000/produto", config)
-      .then(response => (this.produtos = response.data));
+      .then(response => {this.produtos = response.data; this.loading = false});
   }
 };
 </script>

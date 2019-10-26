@@ -30,10 +30,11 @@ export default {
     openProductPage(){
         router.push( 
         { 
-            name: "produto", 
+            name: "purchPage", 
             params: {
-                produto: this.produto
-            }
+                produto: this.produto,
+                id: this.produto.id
+            },
         });
     }
   }

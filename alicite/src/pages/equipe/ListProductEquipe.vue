@@ -7,11 +7,13 @@
           <h3 id="card-title">Produtos Cadastrados</h3>
         </v-row>
         <v-btn @click="novoProduto" id="btn-new-user" color="pink darken-1" icon>
-          <v-icon color="pink darken-5">mdi-account-plus</v-icon>
+          <v-icon color="pink darken-5">mdi-plus</v-icon>
         </v-btn>
       </v-list-item>
         <v-data-table 
             hide-default-footer 
+            loading-text="Carregando dados.."
+            :loading="this.loading"
             :headers="headers" 
             :items="equipe">  
               <template v-slot:item.action="{ item }">
@@ -44,6 +46,7 @@ export default {
   name: "ListProductEquipe",
   vuetify: new Vuetify(),
   data: () => ({
+    loading: true,
     media: true,
     actions: true,
     raised: true,
@@ -76,7 +79,7 @@ export default {
       router.push({ name: "registerProduct" });
     },
     editItem(item) {
-      router.push({ name: "editProduto", params: { prod: item }});
+      router.push({ name: "editProduto", params: { prod: item, id: item.id }});
     },
     deleteItem(item) {
       alert(item);
@@ -95,6 +98,7 @@ export default {
       if (decoded.aud === "AliciteAudience") {
         axios.get("http://localhost:3000/produto", config).then(response => {
           this.equipe = response.data;
+          this.loading = false;
         });
       } else {
         alert("Acesso não autorizado");

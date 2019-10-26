@@ -13,9 +13,10 @@
       <v-btn @click="loginEquipePage" v-if="showLoginEquipe" v-bind:title="equipe" icon>
         <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
       </v-btn>
-      <v-btn @click="produtos" v-if="produtos" text color="pink lighten-1">Produtos</v-btn>
+      <v-btn @click="produtosCliente" v-if="showProdutosCliente" text color="pink lighten-1">Produtos</v-btn>
+      <v-btn @click="produtosEquipe" v-if="showProdutosEquipe" text color="pink lighten-1">Produtos</v-btn>
       <v-btn @click="membros" v-if="showMembros" text color="pink lighten-1">Membros</v-btn>
-      <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1">Logout</v-btn>
+      <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1"><v-icon> mdi-arrow-right-bold-circle-outline </v-icon></v-btn>
     </v-app-bar>
     <router-view />
 
@@ -48,6 +49,8 @@ export default {
     showLogoff: false,
     showNewProduct: false,
     showMembros: false,
+    showProdutosEquipe: false,
+    showProdutosCliente: false,
     equipe: "Login da equipe",
     cliente: "Login comercial"
   }),
@@ -56,13 +59,15 @@ export default {
       this.showLoginEquipe = false;
       this.showLoginCliente = false;
       this.showLogoff = true;
-      this.showProdutos = false;
+      this.showProdutosEquipe = false;
+      this.showProdutosCliente = true;
       this.showMembros = false;
     });
     EventBus.$on("openEquipe", () => {
       this.showLoginEquipe = false;
       this.showLoginCliente = false;
-      this.showProdutos = true;
+      this.showProdutosEquipe = true;
+      this.showProdutosCliente = false;
       this.showLogoff = true;
       this.showNewProduct = true;
       this.showMembros = true;
@@ -70,7 +75,8 @@ export default {
     EventBus.$on("onlyLogin", () => {
       this.showLoginEquipe = true;
       this.showLoginCliente = true;
-      this.showProdutos = true;
+      this.showProdutosEquipe = false;
+      this.showProdutosCliente = false;
       this.showLogoff = false;
       this.showMembros = false;
     });
@@ -89,7 +95,8 @@ export default {
     logoff() {
       this.showLoginEquipe = true;
       this.showLoginCliente = true;
-      this.showProdutos = false;
+      this.showProdutosEquipe = false;
+      this.showProdutosCliente = false;
       this.showLogoff = false;
       this.showMembros = false;
       localStorage.setItem("access-token", "");
@@ -104,8 +111,11 @@ export default {
     membros() {
       router.push({ name: "equipe" });
     },
-    produtos() {
+    produtosEquipe() {
       router.push({ name: "produtos" });
+    },
+    produtosCliente() {
+      router.push({ name: "produtosCliente" });
     }
   }
 };

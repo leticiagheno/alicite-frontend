@@ -66,7 +66,7 @@ export default new Router({
       component: MembrosEquipe
     },
     {
-      path: "/produtos",
+      path: "/lista-produtos",
       name: "produtos",
       component: ListProductEquipe
     },
@@ -76,19 +76,19 @@ export default new Router({
       component: ListProduct
     },
     {
-      path: "/produto",
+      path: "/produto/:id",
       name: "produto",
       component: ProductPage,
       props: true
     },
     {
-      path: "/editProduto",
+      path: "/edicao-produto/:id",
       name: "editProduto",
       component: EditProduct,
       props: true
     },
     {
-      path: "/purchPage",
+      path: "/purch-page/:id",
       name: "purchPage",
       component: PurchPage,
       props: true
