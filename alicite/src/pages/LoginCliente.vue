@@ -83,12 +83,15 @@ export default {
           senha: this.senha
         })
         .then(response => {
-          localStorage.setItem("access-token", response.data);
+          localStorage.setItem("access-token", response.data.token);
+          console.log(response.data.token);
           EventBus.$emit("openCliente");
-          router.push({ name: "produtosCliente" });
+          router.push({ name: "produtosCliente", params: {
+                clienteId: response.data.id
+            }, });
         })
         .catch(() =>
-          alert("Erro ao realizar login. Verifique seu e-mail e senha.")
+          this.$swal('Erro ao realizar login!', 'Verifique seu e-mail e senha.', 'error')
         );
     }
   }

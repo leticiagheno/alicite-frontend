@@ -13,7 +13,8 @@
     </v-img>
     <v-card-title>{{produto.nome}}</v-card-title>
         <v-card-text>
-            <p> {{produto.descricao}} </p>
+            <span> {{produto.descricao}} </span>
+            <h4> R${{ produto.valor }} </h4>
         </v-card-text>
     </v-card>
 </template>
@@ -24,7 +25,7 @@ import router from "../router";
 
 export default {
   name: 'CardProduct',
-  props: ['produto'],
+  props: ['produto', 'clienteId'],
   vuetify: new Vuetify(),
   methods: {
     openProductPage(){
@@ -33,11 +34,12 @@ export default {
             name: "purchPage", 
             params: {
                 produto: this.produto,
-                id: this.produto.id
+                id: this.produto.id,
+                clienteId: this.clienteId
             },
         });
     }
-  }
+  },
 };
 </script>
 

@@ -3,128 +3,10 @@
         <v-col md="10">
             <h2> Medidas </h2>        
             <v-form>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            label="Torax"
-                            color="pink darken-1"
-                            v-model="torax"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                    <v-col>
-                        <v-text-field
-                            label="Busto"
-                            color="pink darken-1"
-                            v-model="busto"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            label="Cintura"
-                            color="pink darken-1"
-                            v-model="cintura"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                    <v-col>
-                            <v-text-field
-                            label="Quadril"
-                            color="pink darken-1"
-                            v-model="quadril"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            label="Altura"
-                            color="pink darken-1"
-                            v-model="altura"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                    <v-col>
-                            <v-text-field
-                            label="Ombro"
-                            color="pink darken-1"
-                            v-model="ombro"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            label="Altura manga curta"
-                            color="pink darken-1"
-                            v-model="alturaCurta"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                    <v-col>
-                            <v-text-field
-                            label="Altura manga longa"
-                            color="pink darken-1"
-                            v-model="alturaLonga"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            label="Largura - Coxa"
-                            color="pink darken-1"
-                            v-model="larguraCoxa"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                    <v-col>
-                            <v-text-field
-                            label="Largura - Panturrilha"
-                            color="pink darken-1"
-                            v-model="larguraPanturrilha"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-area
-                            label="Observações"
-                            color="pink darken-1"
-                            v-model="observacoes"
-                            outlined
-                            rounded
-                            required
-                        />
-                    </v-col>
-                </v-row>
+              <InferiorForm v-if="inferior" :pedido="this.pedido"/>
+                <SuperiorForm v-if="superior" :pedido="this.pedido"/>
+                  <VestidoForm v-if="vestido" :pedido="this.pedido"/>
+                    
             </v-form>
         </v-col>
         <v-col md="2">
@@ -147,32 +29,72 @@
 
 <script>
 import Vuetify from "vuetify/lib";
+import SuperiorForm from "./components/SuperiorForm.vue";
+import InferiorForm from "./components/InferiorForm.vue";
+import VestidoForm from "./components/VestidoForm.vue";
 import router from "../router";
+import axios from 'axios';
 
 export default {
   name: "PurchPage",
-  props: ['produto'],
+  props: ['produto', 'clienteId'],
+  components: {
+    SuperiorForm,
+    VestidoForm,
+    InferiorForm, 
+  },
   vuetify: new Vuetify(),
   data: () => ({
     width: 600,
-    torax: '',
-    busto: '',
-    cintura: '',
-    quadril: '',
-    altura: '',
-    ombro: '',
-    alturaCurta: '',
-    alturaLonga: '',
-    larguraCoxa: '',
-    larguraPanturrilha: '',
-    observacoes: ''
+    vestido: false,
+    superior: false,
+    inferior: false,
+    pedido: {}
   }),
   methods: {
       save() {
+        var config = {
+        headers: { "access-token": localStorage.getItem("access-token") }
+      };
+      axios
+        .post(
+          "http://localhost:3000/compras",
+          {
+            produtoId: this.produto.id,
+            torax: this.pedido.torax,
+            busto: this.pedido.busto,
+            cintura: this.pedido.cintura,
+            quadril: this.pedido.quadril,
+            altura: this.pedido.altura,
+            ombro: this.pedido.ombro,
+            alturaMangaCurta: this.pedido.alturaCurta,
+            alturaMangaLonga: this.pedido.alturaLonga,
+            larguraCoxa: this.pedido.larguraCoxa,
+            larguraPanturrilha: this.pedido.panturrilha, 
+            observacoes: this.pedido.observacoes,
+            clienteId: this.clienteId,
+            status: 'Pendente'
+          },
+          config
+        )
+        .then(() => {
+          this.$swal('Atenção!', 'Pedido realizado com sucesso!', 'success');
+          router.push({ name: "produtos" });
+        })
+        .catch(() => this.$swal('Atenção!', 'Erro ao realizar pedido!', 'error'));
       },
       back() {
         router.push({ name: "produtosCliente" });
       }
+  },
+  beforeMount() {
+    if (this.produto.tipo == "Vestido") {
+      this.vestido = true;
+    } else if (this.produto.tipo == "Calça/Saia") {
+      this.inferior = true;
+    } else {
+      this.superior = true;
+    }
   }
 };
 </script>

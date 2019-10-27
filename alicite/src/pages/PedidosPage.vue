@@ -4,31 +4,22 @@
       <v-list-item id="card-header" class="d-flex justify-space-between align-baseline">
         <v-row>
           <v-icon color="pink darken-5">mdi-hanger</v-icon>
-          <h3 id="card-title">Produtos Cadastrados</h3>
+          <h3 id="card-title">Seus pedidos</h3>
         </v-row>
-        <v-btn @click="novoProduto" id="btn-new-user" color="pink darken-1" icon>
-          <v-icon color="pink darken-5">mdi-plus</v-icon>
-        </v-btn>
       </v-list-item>
         <v-data-table 
             hide-default-footer 
             loading-text="Carregando dados.."
             :loading="this.loading"
             :headers="headers" 
-            :items="equipe">  
+            :items="items">  
               <template v-slot:item.action="{ item }">
       <v-icon
         small
         class="mr-2"
-        @click="editItem(item)"
+        @click="click(item)"
       >
-        mdi-border-color
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
+        cursor-default-click
       </v-icon>
     </template>
         </v-data-table>
@@ -43,59 +34,47 @@ import * as jwt from "jsonwebtoken";
 import axios from "axios";
 
 export default {
-  name: "ListProductEquipe",
+  name: "PedidosPage",
   vuetify: new Vuetify(),
+  props: ['id'],
   data: () => ({
     loading: true,
     media: true,
     actions: true,
     raised: true,
     width: 1200,
-    equipe: [],
+    items: [],
     headers: [
       {
-        text: "Código",
+        text: "Produto",
         align: "center",
         sortable: false,
-        value: "id"
+        value: "produto.nome"
       },
       {
-        text: "Nome",
+        text: "Valor médio",
         align: "center",
         sortable: false,
-        value: "nome"
+        value: "produto.valor"
       },
       {
-        text: "Descriçao",
+        text: "Status",
         align: "center",
         sortable: false,
-        value: "descricao"
+        value: "status"
       },
       {
-        text: "Tipo da peça",
+        text: "Observações",
         align: "center",
         sortable: false,
-        value: "tipo"
+        value: "observacoes"
       },
-      {
-        text: "Valor",
-        align: "center",
-        sortable: false,
-        value: "valor"
-      },
-      { text: 'Ações', value: 'action', sortable: false },
     ]
   }),
   methods: {
-    novoProduto() {
-      router.push({ name: "registerProduct" });
-    },
-    editItem(item) {
-      router.push({ name: "editProduto", params: { prod: item, id: item.id }});
-    },
-    deleteItem(item) {
-      alert(item);
-    }
+      click(item) {
+
+      }
   },
   beforeMount() {
     var config = {
@@ -108,8 +87,8 @@ export default {
     } else {
       var decoded = jwt.decode(accessToken);
       if (decoded.aud === "AliciteAudience") {
-        axios.get("http://localhost:3000/produto", config).then(response => {
-          this.equipe = response.data;
+        axios.get("http://localhost:3000/compras/" + this.id , config).then(response => {
+          this.items = response.data;
           this.loading = false;
         });
       } else {

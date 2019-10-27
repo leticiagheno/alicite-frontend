@@ -73,7 +73,8 @@ export default new Router({
     {
       path: "/produtos",
       name: "produtosCliente",
-      component: ListProduct
+      component: ListProduct,
+      props: true
     },
     {
       path: "/produto/:id",

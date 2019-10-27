@@ -30,13 +30,14 @@ export default {
   props: ['produto'],
   vuetify: new Vuetify(),
   data: () => ({
-    width: 600
+    width: 600,
+    clienteId: ''
   }),
   methods: {
     purch() {
       router.push({ name: "purchPage", params: { produto: this.produto }});
     }
-  }
+  },
 };
 </script>
 

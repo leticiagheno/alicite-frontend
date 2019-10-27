@@ -67,7 +67,7 @@ export default {
           router.push({ name: "equipe" });
         })
         .catch(() =>
-          alert("Erro ao realizar login. Verifique seu e-mail e senha.")
+          this.$swal('Atenção!', 'Verifique seu e-mail e senha!', 'error')
         );
     }
   }

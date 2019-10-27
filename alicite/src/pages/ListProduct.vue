@@ -9,7 +9,8 @@
             <template slot-scope="produto">
             <CardProduct  
               v-bind:key="produto.id" 
-              :produto ="produto.item" />
+              :produto ="produto.item"
+              :clienteId ="clienteId" />
           </template>
         </vue-chunks>
       </div>
@@ -28,6 +29,7 @@ import router from "../router";
 
 export default {
   name: 'ListProduct',
+  props: ['clienteId'],
   components: {
     CardProduct, 
   },
@@ -44,6 +46,7 @@ export default {
   },
   vuetify: new Vuetify(),
   beforeMount() {
+    console.log(this.clienteId);
     var config = {
       headers: { "access-token": localStorage.getItem("access-token") }
     };

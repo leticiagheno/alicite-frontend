@@ -34,6 +34,24 @@
             rounded
             required
           />
+          <v-select
+            :items="items"
+            color="pink darken-1"
+            v-model="tipo"
+            outlined
+            rounded
+            required
+            label="Tipo da peça"
+          ></v-select>
+          <v-text-field
+            label="Valor"
+            color="pink darken-1"
+            v-model="valor"
+            prefix="R$"
+            outlined
+            rounded
+            required
+          />
           <v-row class="d-flex justify-end">
             <v-btn @click="saveProduct" text color="pink darken-1">Salvar</v-btn>
           </v-row>
@@ -58,7 +76,13 @@ export default {
     width: 800,
     nome: "",
     descricao: "",
-    foto: ''
+    foto: '',
+    tipo: '',
+    valor: '',
+    items: 
+    ['Blusa/Casaco',
+     'Calça/Saia', 
+     'Vestido'],
   }),
   methods: {
     loadTextFromFile(ev) {
@@ -79,15 +103,17 @@ export default {
           {
             nome: this.nome,
             descricao: this.descricao,
-            foto: this.foto
+            foto: this.foto,
+            valor: this.valor, 
+            tipo: this.tipo
           },
           config
         )
         .then(() => {
-          alert("Produto cadastrado com sucesso!");
+          this.$swal('Atenção!', 'Produto cadastrado com sucesso!', 'success');
           router.push({ name: "produtos" });
         })
-        .catch(() => alert("Erro ao cadastrar produto!"));
+        .catch(() => this.$swal('Atenção!', 'Não foi possível cadastrar produto.', 'error'));
     }
   },
   beforeMount() {
@@ -111,7 +137,7 @@ export default {
   z-index: 100;
   position: relative;
   float: left;
-  height: 250px;
+  height: 375px;
   width: 350px;
   margin: 0px 10px 10px 10px;
   padding: 10px;
