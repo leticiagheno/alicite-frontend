@@ -11,6 +11,8 @@ import HomePage from "./pages/HomePage.vue";
 import About from "./pages/About.vue";
 import ListProductEquipe from "./pages/equipe/ListProductEquipe.vue";
 import ProductPage from "./pages/ProductPage.vue"
+import PedidosPage from "./pages/PedidosPage.vue"
+import PedidoPage from "./pages/PedidoPage.vue"
 import EditProduct from "./pages/equipe/EditProduct.vue"
 import ListProduct from "./pages/ListProduct.vue"
 import PurchPage from './pages/PurchPage.vue'
@@ -74,6 +76,18 @@ export default new Router({
       path: "/produtos",
       name: "produtosCliente",
       component: ListProduct,
+      props: true
+    },
+    {
+      path: "/pedidos",
+      name: "pedidosCliente",
+      component: PedidosPage,
+      props: true
+    },
+    {
+      path: "/pedido",
+      name: "pedido",
+      component: PedidoPage,
       props: true
     },
     {

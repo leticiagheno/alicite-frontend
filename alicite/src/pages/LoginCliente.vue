@@ -84,7 +84,7 @@ export default {
         })
         .then(response => {
           localStorage.setItem("access-token", response.data.token);
-          console.log(response.data.token);
+          localStorage.setItem("idCliente", response.data.id);
           EventBus.$emit("openCliente");
           router.push({ name: "produtosCliente", params: {
                 clienteId: response.data.id

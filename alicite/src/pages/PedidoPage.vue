@@ -56,7 +56,7 @@
 
       <v-timeline-item
         class="mb-4"
-        color="grey"
+        color="pink"
         icon-color="grey lighten-2"
         small
       >
@@ -138,3 +138,12 @@
     </v-timeline>
   </v-container>
 </template>
+
+<script>
+import Vuetify from "vuetify/lib";
+
+export default {
+  name: "PedidoPage",
+  vuetify: new Vuetify()
+}
+</script>

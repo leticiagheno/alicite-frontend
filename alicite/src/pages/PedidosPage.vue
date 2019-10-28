@@ -29,14 +29,13 @@
 
 <script>
 import Vuetify from "vuetify/lib";
-import router from "../../router";
+import router from "../router";
 import * as jwt from "jsonwebtoken";
 import axios from "axios";
 
 export default {
   name: "PedidosPage",
   vuetify: new Vuetify(),
-  props: ['id'],
   data: () => ({
     loading: true,
     media: true,
@@ -81,13 +80,15 @@ export default {
       headers: { "access-token": localStorage.getItem("access-token") }
     };
     var accessToken = localStorage.getItem("access-token");
+    var id = localStorage.getItem("idCliente");
     if (accessToken === "") {
       alert("Acesso não autorizado!");
       router.push({ name: "homepage" });
     } else {
       var decoded = jwt.decode(accessToken);
       if (decoded.aud === "AliciteAudience") {
-        axios.get("http://localhost:3000/compras/" + this.id , config).then(response => {
+        axios.get("http://localhost:3000/compras/" + id , config).then(response => {
+          console.log(response.data);
           this.items = response.data;
           this.loading = false;
         });

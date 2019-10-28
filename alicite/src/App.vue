@@ -14,6 +14,8 @@
         <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
       </v-btn>
       <v-btn @click="produtosCliente" v-if="showProdutosCliente" text color="pink lighten-1">Produtos</v-btn>
+      <v-btn @click="pedidosCliente" v-if="showPedidosCliente" text color="pink lighten-1">Pedidos</v-btn>
+      <v-btn @click="pedidoCliente" text color="pink lighten-1">Pedidoasass</v-btn>
       <v-btn @click="produtosEquipe" v-if="showProdutosEquipe" text color="pink lighten-1">Produtos</v-btn>
       <v-btn @click="membros" v-if="showMembros" text color="pink lighten-1">Membros</v-btn>
       <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1"><v-icon> mdi-arrow-right-bold-circle-outline </v-icon></v-btn>
@@ -51,6 +53,7 @@ export default {
     showMembros: false,
     showProdutosEquipe: false,
     showProdutosCliente: false,
+    showPedidosCliente: false,
     equipe: "Login da equipe",
     cliente: "Login comercial"
   }),
@@ -61,6 +64,7 @@ export default {
       this.showLogoff = true;
       this.showProdutosEquipe = false;
       this.showProdutosCliente = true;
+      this.showPedidosCliente = true;
       this.showMembros = false;
     });
     EventBus.$on("openEquipe", () => {
@@ -68,6 +72,7 @@ export default {
       this.showLoginCliente = false;
       this.showProdutosEquipe = true;
       this.showProdutosCliente = false;
+      this.showPedidosCliente = false;
       this.showLogoff = true;
       this.showNewProduct = true;
       this.showMembros = true;
@@ -77,6 +82,7 @@ export default {
       this.showLoginCliente = true;
       this.showProdutosEquipe = false;
       this.showProdutosCliente = false;
+      this.showPedidosCliente = false;
       this.showLogoff = false;
       this.showMembros = false;
     });
@@ -97,6 +103,7 @@ export default {
       this.showLoginCliente = true;
       this.showProdutosEquipe = false;
       this.showProdutosCliente = false;
+      this.showPedidosCliente = false;
       this.showLogoff = false;
       this.showMembros = false;
       localStorage.setItem("access-token", "");
@@ -116,6 +123,12 @@ export default {
     },
     produtosCliente() {
       router.push({ name: "produtosCliente" });
+    },
+    pedidosCliente() {
+      router.push({ name: "pedidosCliente" });
+    },
+    pedidoCliente() {
+      router.push({ name: "pedido" });
     }
   }
 };
