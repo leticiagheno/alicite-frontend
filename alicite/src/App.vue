@@ -1,5 +1,5 @@
 <template>
-  <v-app color="grey lighten-5" id="font-app">
+  <v-app color="grey lighten-5" id="font-app" class="appClass">
     <v-app-bar color="grey lighten-3" dense>
       <v-toolbar-title @click="homePage" id="tool-title">Alicitê</v-toolbar-title>
       <div class="flex-grow-1"></div>
@@ -20,7 +20,7 @@
       <v-btn @click="membros" v-if="showMembros" text color="pink lighten-1">Membros</v-btn>
       <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1"><v-icon> mdi-arrow-right-bold-circle-outline </v-icon></v-btn>
     </v-app-bar>
-    <router-view />
+    <router-view class="teste" />
 
     <v-footer color="grey lighten-3">
       <v-icon color="pink lighten-1" id="hanger">mdi-information</v-icon>
@@ -141,6 +141,15 @@ export default {
   margin-top: 5px;
   font-size: 2.25rem;
   cursor: pointer;
+}
+
+.appClass{
+  display: grid;
+  grid-template-rows: 50px auto;
+}
+
+.teste {
+  height: 100%;
 }
 
 .footer-text {

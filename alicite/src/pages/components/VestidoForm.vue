@@ -75,6 +75,16 @@
                     required
                 />
             </v-col>
+             <v-col>
+                <v-text-field
+                    label="Quadril"
+                    color="pink darken-1"
+                    v-model="pedido.quadril"
+                    outlined
+                    rounded
+                    required
+                />
+            </v-col>
         </v-row>
         <v-row>
            <v-textarea

@@ -37,7 +37,7 @@ import axios from 'axios';
 
 export default {
   name: "PurchPage",
-  props: ['produto', 'clienteId'],
+  props: ['produto'],
   components: {
     SuperiorForm,
     VestidoForm,
@@ -54,8 +54,9 @@ export default {
   methods: {
       save() {
         var config = {
-        headers: { "access-token": localStorage.getItem("access-token") }
-      };
+          headers: { "access-token": localStorage.getItem("access-token") }
+        };
+        var clienteId = localStorage.getItem("idCliente");
       axios
         .post(
           "http://localhost:3000/compras",
@@ -72,7 +73,7 @@ export default {
             larguraCoxa: this.pedido.larguraCoxa,
             larguraPanturrilha: this.pedido.panturrilha, 
             observacoes: this.pedido.observacoes,
-            clienteId: this.clienteId,
+            clienteId: clienteId,
             status: 'Pendente'
           },
           config

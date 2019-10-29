@@ -1,20 +1,22 @@
 <template>
-  <v-container style="max-width: 600px;">
+<v-col>
+<v-row style="padding-left: 3rem;">
+  <h1> Pedido Nº {{ this.compra.id }} </h1>
+</v-row>
+<v-row>
+  <v-col style="max-width: 60rem; max-height: 100%; overflow-y: auto">
     <v-timeline dense clipped>
       <v-timeline-item
         fill-dot
         class="white--text mb-12"
-        color="orange"
+        color="purple"
         large
       >
-        <template v-slot:icon>
-          <span>JL</span>
-        </template>
         <v-text-field
           v-model="input"
           hide-details
           flat
-          label="Leave a comment..."
+          label="Comentário.."
           solo
           @keydown.enter="comment"
         >
@@ -24,7 +26,7 @@
               depressed
               @click="comment"
             >
-              Post
+              Enviar
             </v-btn>
           </template>
         </v-text-field>
@@ -33,117 +35,105 @@
       <v-slide-x-transition
         group
       >
-        <v-timeline-item
-          v-for="event in timeline"
-          :key="event.id"
-          class="mb-4"
-          color="pink"
-          small
-        >
-          <v-row justify="space-between">
-            <v-col cols="7" v-text="event.text"></v-col>
-            <v-col class="text-right" cols="5" v-text="event.time"></v-col>
-          </v-row>
-        </v-timeline-item>
+        <Chat v-for="chat in items" :key="chat.id" :chat="chat"/>
       </v-slide-x-transition>
-
-      <v-timeline-item
-        class="mb-6"
-        hide-dot
-      >
-        <span>TODAY</span>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        color="pink"
-        icon-color="grey lighten-2"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">This order was archived.</v-col>
-          <v-col class="text-right" cols="5">15:26 EDT</v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            <v-chip
-              class="white--text ml-0"
-              color="purple"
-              label
-              small
-            >
-              APP
-            </v-chip>
-            Digital Downloads fulfilled 1 item.
-          </v-col>
-          <v-col class="text-right" cols="5">15:25 EDT</v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        color="grey"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            Order confirmation email was sent to John Leider (john@vuetifyjs.com).
-          </v-col>
-          <v-col class="text-right" cols="5">15:25 EDT</v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        hide-dot
-      >
-        <v-btn
-          class="mx-0"
-          color="white"
-        >
-          Resend Email
-        </v-btn>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        color="grey"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            A $15.00 USD payment was processed on PayPal Express Checkout
-          </v-col>
-          <v-col class="text-right" cols="5">15:25 EDT</v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        color="grey"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            John Leider placed this order on Online Store (checkout #1937432132572).
-          </v-col>
-          <v-col class="text-right" cols="5">15:25 EDT</v-col>
-        </v-row>
-      </v-timeline-item>
     </v-timeline>
-  </v-container>
+  </v-col>
+  <v-col style="padding-left: 2rem;">
+    <v-row>
+      <v-col>
+        <h3> {{this.compra.produto.nome}} </h3>
+        <v-row>
+          <span> {{this.compra.produto.descricao}} </span>
+        </v-row>
+        <v-row>
+          <span> R$ {{this.compra.produto.valor}} </span>
+        </v-row>
+        <v-row>
+          <span> Status: {{this.compra.status }} </span>
+        </v-row>
+      </v-col>
+      <v-col style="display: flex; justify-content: flex-end;">
+        <v-img :src="this.compra.produto.foto" style="max-width: 10rem"/>
+      </v-col>
+    </v-row>
+    <v-row>
+          <InferiorView v-if="inferior" :pedido="this.compra"/>
+    <SuperiorView v-if="superior" :pedido="this.compra"/>
+    <VestidoView v-if="vestido" :pedido="this.compra"/>
+    </v-row>
+  </v-col>
+  </v-row>
+</v-col>
 </template>
 
 <script>
 import Vuetify from "vuetify/lib";
+import Chat from "./components/Chat";
+import InferiorView from "./components/InferiorView";
+import SuperiorView from "./components/SuperiorView";
+import VestidoView from "./components/VestidoView";
+import axios from "axios";
 
 export default {
   name: "PedidoPage",
-  vuetify: new Vuetify()
+  props: ['compra'],
+  components: {
+    Chat, InferiorView, SuperiorView, VestidoView
+  },
+  data: function () {
+    return {
+      items: [],
+      input: null,
+      nonce: 0,
+      vestido: false,
+      inferior: false,
+      superior: false
+    }
+  },
+  computed: {
+      timeline () {
+        return this.items.slice().reverse()
+      },
+    },
+  vuetify: new Vuetify(),
+  beforeMount() {
+    console.log(this.compra.produto);
+    if(this.compra.produto.tipo === "Vestido") {
+       this.vestido = true;
+     }
+     else if (this.compra.produto.tipo === "Blusa/Casaco"){
+       this.superior = true;
+     }
+     else {
+       this.inferior = true;
+     }
+    var config = {
+      headers: { "access-token": localStorage.getItem("access-token") }
+    };
+    axios
+      .get("http://localhost:3000/chat/" + this.compra.id, config)
+      .then(response => {this.items = response.data; this.loading = false});
+  },
+   methods: {
+      comment () {
+        const time = new Date()
+        let chat = {
+          id: this.nonce++,
+          clienteId: this.compra.clienteId,
+          compraId: this.compra.id,
+          texto: this.input,
+          dataRegistro: time
+        }
+        this.items.push(chat);
+        var config = {
+          headers: { "access-token": localStorage.getItem("access-token") }
+        };
+        axios
+          .post("http://localhost:3000/chat/", chat, config);
+
+        this.input = null;
+      },
+   }
 }
 </script>

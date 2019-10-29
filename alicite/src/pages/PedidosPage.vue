@@ -13,14 +13,15 @@
             :loading="this.loading"
             :headers="headers" 
             :items="items">  
-              <template v-slot:item.action="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="click(item)"
-      >
-        cursor-default-click
-      </v-icon>
+          <template v-slot:item.action="{ item }">
+            <v-icon
+              small
+              color="pink"
+              class="mr-2"
+              @click="click(item)"
+            >
+              mdi-cursor-default-click
+            </v-icon>
     </template>
         </v-data-table>
     </v-card>
@@ -68,11 +69,12 @@ export default {
         sortable: false,
         value: "observacoes"
       },
+       { text: 'Ações', value: 'action', sortable: false },
     ]
   }),
   methods: {
       click(item) {
-
+        router.push({ name: "pedido", params: { compra: item } });
       }
   },
   beforeMount() {
@@ -88,7 +90,6 @@ export default {
       var decoded = jwt.decode(accessToken);
       if (decoded.aud === "AliciteAudience") {
         axios.get("http://localhost:3000/compras/" + id , config).then(response => {
-          console.log(response.data);
           this.items = response.data;
           this.loading = false;
         });
