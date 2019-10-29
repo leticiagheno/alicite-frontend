@@ -1,39 +1,58 @@
 <template>
-  <v-app color="grey lighten-5" id="font-app" class="appClass">
-    <v-app-bar color="grey lighten-3" dense>
-      <v-toolbar-title @click="homePage" id="tool-title">Alicitê</v-toolbar-title>
-      <div class="flex-grow-1"></div>
-      <v-btn
-        @click="loginClientePage"
-        v-if="showLoginCliente"
-        v-bind:title="cliente"
-        text
-        color="pink lighten-1"
-      >Login</v-btn>
-      <v-btn @click="loginEquipePage" v-if="showLoginEquipe" v-bind:title="equipe" icon>
-        <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
-      </v-btn>
-      <v-btn @click="produtosCliente" v-if="showProdutosCliente" text color="pink lighten-1">Produtos</v-btn>
-      <v-btn @click="pedidosCliente" v-if="showPedidosCliente" text color="pink lighten-1">Pedidos</v-btn>
-      <v-btn @click="pedidoCliente" text color="pink lighten-1">Pedidoasass</v-btn>
-      <v-btn @click="produtosEquipe" v-if="showProdutosEquipe" text color="pink lighten-1">Produtos</v-btn>
-      <v-btn @click="membros" v-if="showMembros" text color="pink lighten-1">Membros</v-btn>
-      <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1"><v-icon> mdi-arrow-right-bold-circle-outline </v-icon></v-btn>
-    </v-app-bar>
-    <router-view class="teste" />
+  <v-app color="grey lighten-5" id="font-app">
+    <div class="appClass">
+      <v-app-bar color="grey lighten-3" dense>
+        <v-toolbar-title @click="homePage" id="tool-title">Alicitê</v-toolbar-title>
+        <div class="flex-grow-1"></div>
+        <v-btn
+          @click="loginClientePage"
+          v-if="showLoginCliente"
+          v-bind:title="cliente"
+          text
+          color="pink lighten-1"
+        >Login</v-btn>
+        <v-btn @click="loginEquipePage" v-if="showLoginEquipe" v-bind:title="equipe" icon>
+          <v-icon color="pink lighten-1">mdi-account-supervisor</v-icon>
+        </v-btn>
+        <v-btn
+          @click="produtosCliente"
+          v-if="showProdutosCliente"
+          text
+          color="pink lighten-1"
+        >Produtos</v-btn>
+        <v-btn @click="pedidosCliente" v-if="showPedidosCliente" text color="pink lighten-1">Pedidos</v-btn>
+        <v-btn
+          @click="pedidosEquipe"
+          v-if="showEditPedidoEquipe"
+          text
+          color="pink lighten-1"
+        >Pedidos</v-btn>
+        <v-btn
+          @click="produtosEquipe"
+          v-if="showProdutosEquipe"
+          text
+          color="pink lighten-1"
+        >Produtos</v-btn>
+        <v-btn @click="membros" v-if="showMembros" text color="pink lighten-1">Membros</v-btn>
+        <v-btn @click="logoff" v-if="showLogoff" text color="pink lighten-1">
+          <v-icon>mdi-arrow-right-bold-circle-outline</v-icon>
+        </v-btn>
+      </v-app-bar>
+      <router-view class="teste" />
 
-    <v-footer color="grey lighten-3">
-      <v-icon color="pink lighten-1" id="hanger">mdi-information</v-icon>
-      <a @click="aboutPage" class="footer-text">Sobre</a>
-      <div class="flex-grow-1"></div>
-      <v-icon color="pink lighten-1" id="hanger">mdi-hanger</v-icon>
-      <div>
-        <a
-          class="footer-text"
-          href="https://github.com/leticiagheno"
-        >&copy; Letícia Gheno Baldissarelli</a>
-      </div>
-    </v-footer>
+      <v-footer color="grey lighten-3">
+        <v-icon color="pink lighten-1" id="hanger">mdi-information</v-icon>
+        <a @click="aboutPage" class="footer-text">Sobre</a>
+        <div class="flex-grow-1"></div>
+        <v-icon color="pink lighten-1" id="hanger">mdi-hanger</v-icon>
+        <div>
+          <a
+            class="footer-text"
+            href="https://github.com/leticiagheno"
+          >&copy; Letícia Gheno Baldissarelli</a>
+        </div>
+      </v-footer>
+    </div>
   </v-app>
 </template>
 
@@ -54,6 +73,7 @@ export default {
     showProdutosEquipe: false,
     showProdutosCliente: false,
     showPedidosCliente: false,
+    showEditPedidoEquipe: false,
     equipe: "Login da equipe",
     cliente: "Login comercial"
   }),
@@ -66,6 +86,7 @@ export default {
       this.showProdutosCliente = true;
       this.showPedidosCliente = true;
       this.showMembros = false;
+      this.showEditPedidoEquipe = false;
     });
     EventBus.$on("openEquipe", () => {
       this.showLoginEquipe = false;
@@ -76,6 +97,7 @@ export default {
       this.showLogoff = true;
       this.showNewProduct = true;
       this.showMembros = true;
+      this.showEditPedidoEquipe = true;
     });
     EventBus.$on("onlyLogin", () => {
       this.showLoginEquipe = true;
@@ -85,6 +107,7 @@ export default {
       this.showPedidosCliente = false;
       this.showLogoff = false;
       this.showMembros = false;
+      this.showEditPedidoEquipe = false;
     });
   },
   methods: {
@@ -106,6 +129,7 @@ export default {
       this.showPedidosCliente = false;
       this.showLogoff = false;
       this.showMembros = false;
+      this.showEditPedidoEquipe = false;
       localStorage.setItem("access-token", "");
       router.push({ name: "homepage" });
     },
@@ -120,6 +144,9 @@ export default {
     },
     produtosEquipe() {
       router.push({ name: "produtos" });
+    },
+    pedidosEquipe() {
+      router.push({ name: "pedidosEquipe" });
     },
     produtosCliente() {
       router.push({ name: "produtosCliente" });
@@ -143,9 +170,10 @@ export default {
   cursor: pointer;
 }
 
-.appClass{
+.appClass {
+  height: 100%;
   display: grid;
-  grid-template-rows: 50px auto;
+  grid-template-rows: 50px auto 50px;
 }
 
 .teste {

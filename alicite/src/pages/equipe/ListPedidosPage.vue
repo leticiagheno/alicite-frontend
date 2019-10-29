@@ -1,5 +1,5 @@
 <template>
-  <v-container style="height: 100%" fill-height>
+  <v-container fill-height>
     <v-card class="mx-auto" :width="750">
       <v-list-item id="card-header" class="d-flex justify-space-between align-baseline">
         <v-row>
@@ -24,12 +24,12 @@
 
 <script>
 import Vuetify from "vuetify/lib";
-import router from "../router";
+import router from "../../router";
 import * as jwt from "jsonwebtoken";
 import axios from "axios";
 
 export default {
-  name: "PedidosPage",
+  name: "ListPedidosPage",
   vuetify: new Vuetify(),
   data: () => ({
     loading: true,
@@ -39,6 +39,12 @@ export default {
     width: 1200,
     items: [],
     headers: [
+      {
+        text: "Código",
+        align: "center",
+        sortable: false,
+        value: "id"
+      },
       {
         text: "Produto",
         align: "center",
@@ -52,16 +58,16 @@ export default {
         value: "produto.valor"
       },
       {
+        text: "Cliente",
+        align: "center",
+        sortable: false,
+        value: "cliente.nome"
+      },
+      {
         text: "Status",
         align: "center",
         sortable: false,
         value: "status"
-      },
-      {
-        text: "Observações",
-        align: "center",
-        sortable: false,
-        value: "observacoes"
       },
       { text: "Ações", value: "action", sortable: false }
     ]
@@ -83,12 +89,10 @@ export default {
     } else {
       var decoded = jwt.decode(accessToken);
       if (decoded.aud === "AliciteAudience") {
-        axios
-          .get("http://localhost:3000/compras/" + id, config)
-          .then(response => {
-            this.items = response.data;
-            this.loading = false;
-          });
+        axios.get("http://localhost:3000/compras/", config).then(response => {
+          this.items = response.data;
+          this.loading = false;
+        });
       } else {
         alert("Acesso não autorizado");
         router.push({ name: "homepage" });

@@ -86,12 +86,19 @@ export default {
           localStorage.setItem("access-token", response.data.token);
           localStorage.setItem("idCliente", response.data.id);
           EventBus.$emit("openCliente");
-          router.push({ name: "produtosCliente", params: {
-                clienteId: response.data.id
-            }, });
+          router.push({
+            name: "produtosCliente",
+            params: {
+              clienteId: response.data.id
+            }
+          });
         })
         .catch(() =>
-          this.$swal('Erro ao realizar login!', 'Verifique seu e-mail e senha.', 'error')
+          this.$swal(
+            "Erro ao realizar login!",
+            "Verifique seu e-mail e senha.",
+            "error"
+          )
         );
     }
   }

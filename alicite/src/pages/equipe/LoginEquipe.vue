@@ -62,12 +62,13 @@ export default {
           senha: this.senha
         })
         .then(response => {
-          localStorage.setItem("access-token", response.data);
+          localStorage.setItem("access-token", response.data.token);
+          localStorage.setItem("equipeId", response.data.id);
           EventBus.$emit("openEquipe");
           router.push({ name: "equipe" });
         })
         .catch(() =>
-          this.$swal('Atenção!', 'Verifique seu e-mail e senha!', 'error')
+          this.$swal("Atenção!", "Verifique seu e-mail e senha!", "error")
         );
     }
   }

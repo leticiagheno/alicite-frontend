@@ -10,12 +10,14 @@ import MembrosEquipe from "./pages/equipe/MembrosEquipe.vue";
 import HomePage from "./pages/HomePage.vue";
 import About from "./pages/About.vue";
 import ListProductEquipe from "./pages/equipe/ListProductEquipe.vue";
-import ProductPage from "./pages/ProductPage.vue"
-import PedidosPage from "./pages/PedidosPage.vue"
-import PedidoPage from "./pages/PedidoPage.vue"
-import EditProduct from "./pages/equipe/EditProduct.vue"
-import ListProduct from "./pages/ListProduct.vue"
-import PurchPage from './pages/PurchPage.vue'
+import ListPedidosPage from "./pages/equipe/ListPedidosPage.vue";
+import ProductPage from "./pages/ProductPage.vue";
+import PedidosPage from "./pages/PedidosPage.vue";
+import PedidoPage from "./pages/PedidoPage.vue";
+import EditPedidoPage from "./pages/equipe/EditPedidoPage.vue";
+import EditProduct from "./pages/equipe/EditProduct.vue";
+import ListProduct from "./pages/ListProduct.vue";
+import PurchPage from "./pages/PurchPage.vue";
 
 Vue.use(Router);
 
@@ -32,7 +34,6 @@ export default new Router({
       component: LoginCliente
     },
     {
-
       path: "/loginEquipe",
       name: "loginEquipe",
       component: LoginEquipe
@@ -85,9 +86,21 @@ export default new Router({
       props: true
     },
     {
+      path: "/pedidosClientes",
+      name: "pedidosEquipe",
+      component: ListPedidosPage,
+      props: true
+    },
+    {
       path: "/pedido",
       name: "pedido",
       component: PedidoPage,
+      props: true
+    },
+    {
+      path: "/pedidoEquipe",
+      name: "pedidoEquipe",
+      component: EditPedidoPage,
       props: true
     },
     {

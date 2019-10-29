@@ -26,37 +26,28 @@
           </v-slide-x-transition>
         </v-timeline>
       </v-col>
-      <v-col>
-        <v-row style="display: flex; justify-content: flex-end; padding-left: 2rem;">
-          <v-card style="max-width: 25rem">
-            <v-col>
-              <v-row>
-                <v-col>
-                  <h3>{{this.compra.produto.nome}}</h3>
-                  <v-row style="padding: 0.2rem 0.7rem">
-                    <span>{{this.compra.produto.descricao}}</span>
-                  </v-row>
-                  <v-row style="padding: 0.2rem 0.7rem">
-                    <span>R$ {{this.compra.produto.valor}}</span>
-                  </v-row>
-                  <v-row style="padding: 0.2rem 0.7rem">
-                    <span>Status: {{this.compra.status}}</span>
-                  </v-row>
-                </v-col>
-                <v-col>
-                  <v-img :src="this.compra.produto.foto" style="max-width: 10rem" />
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-row style="padding: 0.2rem 1.3rem">
-              <h3>Medidas</h3>
+      <v-col style="padding-left: 2rem;">
+        <v-row>
+          <v-col>
+            <h3>{{this.compra.produto.nome}}</h3>
+            <v-row>
+              <span>{{this.compra.produto.descricao}}</span>
             </v-row>
-            <v-row style="padding: 0.2rem 1rem">
-              <InferiorView v-if="inferior" :pedido="this.compra" />
-              <SuperiorView v-if="superior" :pedido="this.compra" />
-              <VestidoView v-if="vestido" :pedido="this.compra" />
+            <v-row>
+              <span>R$ {{this.compra.produto.valor}}</span>
             </v-row>
-          </v-card>
+            <v-row>
+              <span>Status: {{this.compra.status }}</span>
+            </v-row>
+          </v-col>
+          <v-col style="display: flex; justify-content: flex-end;">
+            <v-img :src="this.compra.produto.foto" style="max-width: 10rem" />
+          </v-col>
+        </v-row>
+        <v-row>
+          <InferiorView v-if="inferior" :pedido="this.compra" />
+          <SuperiorView v-if="superior" :pedido="this.compra" />
+          <VestidoView v-if="vestido" :pedido="this.compra" />
         </v-row>
       </v-col>
     </v-row>
@@ -65,14 +56,14 @@
 
 <script>
 import Vuetify from "vuetify/lib";
-import Chat from "./components/Chat";
-import InferiorView from "./components/InferiorView";
-import SuperiorView from "./components/SuperiorView";
-import VestidoView from "./components/VestidoView";
+import Chat from "../components/Chat";
+import InferiorView from "../components/InferiorView";
+import SuperiorView from "../components/SuperiorView";
+import VestidoView from "../components/VestidoView";
 import axios from "axios";
 
 export default {
-  name: "PedidoPage",
+  name: "EditPedidoPage",
   props: ["compra"],
   components: {
     Chat,
@@ -117,10 +108,11 @@ export default {
   },
   methods: {
     comment() {
+      let equipeId = localStorage.getItem("equipeId");
       const time = new Date();
       let chat = {
         id: this.nonce++,
-        clienteId: this.compra.clienteId,
+        equipeId: equipeId,
         compraId: this.compra.id,
         texto: this.input,
         dataRegistro: time
