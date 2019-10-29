@@ -1,30 +1,40 @@
 <template>
-    <v-container fill-height>
-        <v-col md="10">
-            <h2> Medidas </h2>        
-            <v-form>
-              <InferiorForm v-if="inferior" :pedido="this.pedido"/>
-                <SuperiorForm v-if="superior" :pedido="this.pedido"/>
-                  <VestidoForm v-if="vestido" :pedido="this.pedido"/>
-                    
-            </v-form>
-        </v-col>
-        <v-col md="2">
+  <v-container fill-height>
+    <v-col md="10">
+      <h2 style="color: #E91E63">Medidas</h2>
+      <v-form>
+        <InferiorForm v-if="inferior" :pedido="this.pedido" />
+        <SuperiorForm v-if="superior" :pedido="this.pedido" />
+        <VestidoForm v-if="vestido" :pedido="this.pedido" />
+      </v-form>
+    </v-col>
+    <v-col style="padding-left: 2rem;">
+      <v-row style="display: flex; justify-content: flex-end; ">
+        <v-card style="max-width: 40rem">
+          <v-col>
             <v-row>
-                <v-img :src="produto.foto"/>
+              <v-col>
+                <h3>{{this.produto.nome}}</h3>
+                <v-row style="padding: 0.2rem 0.7rem">
+                  <span>{{this.produto.descricao}}</span>
+                </v-row>
+                <v-row style="padding: 0.2rem 0.7rem">
+                  <span>R$ {{this.produto.valor}}</span>
+                </v-row>
+              </v-col>
+              <v-col>
+                <v-img :src="this.produto.foto" style="max-width: 10rem" />
+              </v-col>
             </v-row>
-            <v-row>
-                <h4>{{produto.nome}}</h4>
-            </v-row>
-            <v-row class="descricao">
-                <span> {{produto.descricao}}</span>
-            </v-row>
-            <v-row class="d-flex flex-row-reverse align-self-end">
-                <v-btn class="buttons" @click="save"> Salvar  </v-btn>
-                <v-btn class="buttons" @click="back"> Voltar </v-btn>
-            </v-row>
-        </v-col>
-    </v-container>
+          </v-col>
+        </v-card>
+      </v-row>
+      <v-row class="d-flex flex-row-reverse align-self-end">
+        <v-btn class="buttons" @click="save">Salvar</v-btn>
+        <v-btn class="buttons" @click="back">Voltar</v-btn>
+      </v-row>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
@@ -33,15 +43,15 @@ import SuperiorForm from "./components/SuperiorForm.vue";
 import InferiorForm from "./components/InferiorForm.vue";
 import VestidoForm from "./components/VestidoForm.vue";
 import router from "../router";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "PurchPage",
-  props: ['produto'],
+  props: ["produto"],
   components: {
     SuperiorForm,
     VestidoForm,
-    InferiorForm, 
+    InferiorForm
   },
   vuetify: new Vuetify(),
   data: () => ({
@@ -52,11 +62,11 @@ export default {
     pedido: {}
   }),
   methods: {
-      save() {
-        var config = {
-          headers: { "access-token": localStorage.getItem("access-token") }
-        };
-        var clienteId = localStorage.getItem("idCliente");
+    save() {
+      var config = {
+        headers: { "access-token": localStorage.getItem("access-token") }
+      };
+      var clienteId = localStorage.getItem("idCliente");
       axios
         .post(
           "http://localhost:3000/compras",
@@ -71,22 +81,24 @@ export default {
             alturaMangaCurta: this.pedido.alturaCurta,
             alturaMangaLonga: this.pedido.alturaLonga,
             larguraCoxa: this.pedido.larguraCoxa,
-            larguraPanturrilha: this.pedido.panturrilha, 
+            larguraPanturrilha: this.pedido.panturrilha,
             observacoes: this.pedido.observacoes,
             clienteId: clienteId,
-            status: 'Pendente'
+            status: "Pendente"
           },
           config
         )
         .then(() => {
-          this.$swal('Atenção!', 'Pedido realizado com sucesso!', 'success');
+          this.$swal("Atenção!", "Pedido realizado com sucesso!", "success");
           router.push({ name: "produtos" });
         })
-        .catch(() => this.$swal('Atenção!', 'Erro ao realizar pedido!', 'error'));
-      },
-      back() {
-        router.push({ name: "produtosCliente" });
-      }
+        .catch(() =>
+          this.$swal("Atenção!", "Erro ao realizar pedido!", "error")
+        );
+    },
+    back() {
+      router.push({ name: "produtosCliente" });
+    }
   },
   beforeMount() {
     if (this.produto.tipo == "Vestido") {
@@ -101,13 +113,12 @@ export default {
 </script>
 
 <style scoped>
-
 .buttons {
-    margin: 5px;
+  margin: 5px;
 }
 
 .descricao {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #page {

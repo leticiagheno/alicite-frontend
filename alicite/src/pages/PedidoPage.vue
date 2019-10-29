@@ -1,7 +1,7 @@
 <template>
   <v-col>
     <v-row style="padding-left: 3rem;">
-      <h1>Pedido Nº {{ this.compra.id }}</h1>
+      <h1 style="color: #9C27B0">Pedido Nº {{ this.compra.id }}</h1>
     </v-row>
     <v-row>
       <v-col style="max-width: 60rem; max-height: 100%; overflow-y: auto">
@@ -27,12 +27,12 @@
         </v-timeline>
       </v-col>
       <v-col>
-        <v-row style="display: flex; justify-content: flex-end; padding-left: 2rem;">
+        <v-row style="display: flex; justify-content: flex-end; padding-right: 2rem;">
           <v-card style="max-width: 25rem">
             <v-col>
               <v-row>
                 <v-col>
-                  <h3>{{this.compra.produto.nome}}</h3>
+                  <h3 style="color: #9C27B0">{{this.compra.produto.nome}}</h3>
                   <v-row style="padding: 0.2rem 0.7rem">
                     <span>{{this.compra.produto.descricao}}</span>
                   </v-row>
@@ -49,7 +49,7 @@
               </v-row>
             </v-col>
             <v-row style="padding: 0.2rem 1.3rem">
-              <h3>Medidas</h3>
+              <h3 style="color: #9C27B0">Medidas</h3>
             </v-row>
             <v-row style="padding: 0.2rem 1rem">
               <InferiorView v-if="inferior" :pedido="this.compra" />

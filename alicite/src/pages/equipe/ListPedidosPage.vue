@@ -74,7 +74,7 @@ export default {
   }),
   methods: {
     click(item) {
-      router.push({ name: "pedido", params: { compra: item } });
+      router.push({ name: "pedidoEquipe", params: { compra: item } });
     }
   },
   beforeMount() {
