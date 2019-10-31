@@ -92,7 +92,7 @@ export default {
         )
         .then(() => {
           this.$swal("Atenção!", "Pedido realizado com sucesso!", "success");
-          router.push({ name: "produtos" });
+          router.push({ name: "produtosCliente" });
         })
         .catch(() =>
           this.$swal("Atenção!", "Erro ao realizar pedido!", "error")
