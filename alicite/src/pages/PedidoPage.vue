@@ -1,5 +1,6 @@
 <template>
-  <v-col>
+<v-row>
+  <v-col v-if="!loading">
     <v-row style="padding-left: 3rem;">
       <h1 style="color: #9C27B0">Pedido Nº {{ this.compra.id }}</h1>
     </v-row>
@@ -61,6 +62,10 @@
       </v-col>
     </v-row>
   </v-col>
+    <v-overlay color="#eeeeee" opacity="1.00" :value="loading">
+      <v-progress-circular color="pink" indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+</v-row>
 </template>
 
 <script>
@@ -73,7 +78,6 @@ import axios from "axios";
 
 export default {
   name: "PedidoPage",
-  props: ["compra"],
   components: {
     Chat,
     InferiorView,
@@ -87,7 +91,10 @@ export default {
       nonce: 0,
       vestido: false,
       inferior: false,
-      superior: false
+      superior: false,
+      loading: true,
+      id: 0,
+      compra: null
     };
   },
   computed: {
@@ -96,8 +103,21 @@ export default {
     }
   },
   vuetify: new Vuetify(),
-  beforeMount() {
-    console.log(this.compra.produto);
+  async beforeMount() {
+    this.id = this.$route.params.id;
+    var config = {
+      headers: { "access-token": localStorage.getItem("access-token") }
+    };
+    await axios
+      .get("http://localhost:3000/compras/" + this.id, config)
+      .then((response) => {
+        this.compra = response.data;
+      });
+    await axios
+      .get("http://localhost:3000/chat/" + this.id, config)
+      .then(response => {
+        this.items = response.data;
+      });
     if (this.compra.produto.tipo === "Vestido") {
       this.vestido = true;
     } else if (this.compra.produto.tipo === "Blusa/Casaco") {
@@ -105,15 +125,7 @@ export default {
     } else {
       this.inferior = true;
     }
-    var config = {
-      headers: { "access-token": localStorage.getItem("access-token") }
-    };
-    axios
-      .get("http://localhost:3000/chat/" + this.compra.id, config)
-      .then(response => {
-        this.items = response.data;
-        this.loading = false;
-      });
+    this.loading = false;
   },
   methods: {
     comment() {

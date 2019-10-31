@@ -131,6 +131,8 @@ export default {
       this.showMembros = false;
       this.showEditPedidoEquipe = false;
       localStorage.setItem("access-token", "");
+      localStorage.removeItem("idEquipe");
+      localStorage.removeItem("idCliente");
       router.push({ name: "homepage" });
     },
     homePage() {
@@ -156,6 +158,18 @@ export default {
     },
     pedidoCliente() {
       router.push({ name: "pedido" });
+    }
+  },
+  mounted() {
+    let equipe = localStorage.getItem("equipeId");
+    let cliente = localStorage.getItem("idCliente");
+    if((equipe === null || equipe === 0 ) && cliente !== null) {
+      console.log("entrou");
+      EventBus.$emit("openCliente");
+    }else if(equipe!== null && (cliente === null || cliente === 0)){
+      EventBus.$emit("openEquipe");
+    }else {
+      EventBus.$emit("openLogin");
     }
   }
 };

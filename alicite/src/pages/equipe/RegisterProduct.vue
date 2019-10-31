@@ -25,6 +25,9 @@
             outlined
             rounded
             required
+            :error-messages="nomeErrors"
+            @input="$v.nome.$touch()"
+            @blur="$v.nome.$touch()"
           />
           <v-textarea
             label="Descrição"
@@ -33,6 +36,9 @@
             outlined
             rounded
             required
+            :error-messages="descricaoErrors"
+            @input="$v.descricao.$touch()"
+            @blur="$v.descricao.$touch()"
           />
           <v-select
             :items="items"
@@ -42,15 +48,20 @@
             rounded
             required
             label="Tipo da peça"
+            :error-messages="tipoErrors"
+            @input="$v.tipo.$touch()"
+            @blur="$v.tipo.$touch()"
           ></v-select>
           <v-text-field
-            label="Valor"
+            label="Valor médio"
             color="pink darken-1"
             v-model="valor"
             prefix="R$"
             outlined
             rounded
-            required
+            :error-messages="valorErrors"
+            @input="$v.valor.$touch()"
+            @blur="$v.valor.$touch()"
           />
           <v-row class="d-flex justify-end">
             <v-btn @click="saveProduct" text color="pink darken-1">Salvar</v-btn>
@@ -65,6 +76,7 @@
 import Vuetify from "vuetify/lib";
 import axios from "axios";
 import router from "../../router";
+import { required } from 'vuelidate/lib/validators';
 
 export default {
   name: "RecoverPass",
@@ -84,6 +96,20 @@ export default {
      'Calça/Saia', 
      'Vestido'],
   }),
+  validations: {
+    nome: {
+      required
+    },
+    descricao: {
+      required
+    },
+    tipo: {
+      required
+    },
+    valor: {
+      required
+    }
+  },
   methods: {
     loadTextFromFile(ev) {
       const file = ev.target.files[0];
@@ -94,9 +120,11 @@ export default {
       reader.readAsDataURL(file);
     },
     saveProduct() {
-      var config = {
-        headers: { "access-token": localStorage.getItem("access-token") }
-      };
+      this.$v.$touch()
+      if(!this.$v.$invalid) {
+        var config = {
+          headers: { "access-token": localStorage.getItem("access-token") }
+        };
       axios
         .post(
           "http://localhost:3000/produto",
@@ -114,6 +142,34 @@ export default {
           router.push({ name: "produtos" });
         })
         .catch(() => this.$swal('Atenção!', 'Não foi possível cadastrar produto.', 'error'));
+    }
+      }
+      
+  },
+  computed: {
+    nomeErrors () {
+      const errors = []
+      if (!this.$v.nome.$dirty) return errors
+      !this.$v.nome.required && errors.push('Campo obrigatório.')
+      return errors
+    },
+    descricaoErrors () {
+      const errors = []
+      if (!this.$v.descricao.$dirty) return errors
+      !this.$v.descricao.required && errors.push('Campo obrigatório.')
+      return errors
+    },
+    tipoErrors(){
+      const errors = []
+      if (!this.$v.tipo.$dirty) return errors
+      !this.$v.tipo.required && errors.push('Campo obrigatório.')
+      return errors
+    },
+    valorErrors() {
+      const errors = []
+      if (!this.$v.valor.$dirty) return errors
+      !this.$v.valor.required && errors.push('Campo obrigatório.')
+      return errors
     }
   },
   beforeMount() {

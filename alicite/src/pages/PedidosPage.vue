@@ -68,7 +68,7 @@ export default {
   }),
   methods: {
     click(item) {
-      router.push({ name: "pedido", params: { compra: item } });
+      router.push({ name: "pedido", params: { id: item.id } });
     }
   },
   beforeMount() {
@@ -84,7 +84,7 @@ export default {
       var decoded = jwt.decode(accessToken);
       if (decoded.aud === "AliciteAudience") {
         axios
-          .get("http://localhost:3000/compras/" + id, config)
+          .get("http://localhost:3000/compras/cliente/" + id, config)
           .then(response => {
             this.items = response.data;
             this.loading = false;

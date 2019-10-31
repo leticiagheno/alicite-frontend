@@ -92,7 +92,7 @@ export default new Router({
       props: true
     },
     {
-      path: "/pedido",
+      path: "/pedido/:id",
       name: "pedido",
       component: PedidoPage,
       props: true

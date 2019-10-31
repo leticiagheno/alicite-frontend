@@ -24,12 +24,6 @@
       >
         mdi-border-color
       </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
     </template>
         </v-data-table>
     </v-card>
@@ -83,7 +77,7 @@ export default {
         sortable: false,
         value: "valor"
       },
-      { text: 'Ações', value: 'action', sortable: false },
+      { text: 'Ações', value: 'action', align: "center", sortable: false },
     ]
   }),
   methods: {
@@ -91,11 +85,8 @@ export default {
       router.push({ name: "registerProduct" });
     },
     editItem(item) {
-      router.push({ name: "editProduto", params: { prod: item, id: item.id }});
+      router.push({ name: "editProduto", params: { id: item.id }});
     },
-    deleteItem(item) {
-      alert(item);
-    }
   },
   beforeMount() {
     var config = {

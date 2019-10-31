@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-col md="10">
-      <h2 style="color: #E91E63">Medidas</h2>
+      <h1 style="color: #E91E63">Medidas</h1>
       <v-form>
         <InferiorForm v-if="inferior" :pedido="this.pedido" />
         <SuperiorForm v-if="superior" :pedido="this.pedido" />
@@ -10,28 +10,30 @@
     </v-col>
     <v-col style="padding-left: 2rem;">
       <v-row style="display: flex; justify-content: flex-end; ">
-        <v-card style="max-width: 40rem">
+        <v-card style="max-width: 45rem">
           <v-col>
             <v-row>
               <v-col>
-                <h3>{{this.produto.nome}}</h3>
-                <v-row style="padding: 0.2rem 0.7rem">
+                <h2 style="color: #E91E63; text-align: center;">{{this.produto.nome}}</h2>
+                <v-row style="padding: 0.2rem 0.7rem; text-align: center;">
                   <span>{{this.produto.descricao}}</span>
                 </v-row>
-                <v-row style="padding: 0.2rem 0.7rem">
-                  <span>R$ {{this.produto.valor}}</span>
+                <v-row>
+                <v-col>
+                  <v-img :src="this.produto.foto" style="max-width: 15rem" />
+                </v-col>
                 </v-row>
-              </v-col>
-              <v-col>
-                <v-img :src="this.produto.foto" style="max-width: 10rem" />
+                <v-row style="padding: 0.2rem 0.7rem;">
+                  <h3 style="text-align: end; width: 100%; color: #E91E63;">R$ {{this.produto.valor}}</h3>
+                </v-row>
               </v-col>
             </v-row>
           </v-col>
         </v-card>
       </v-row>
-      <v-row class="d-flex flex-row-reverse align-self-end">
-        <v-btn class="buttons" @click="save">Salvar</v-btn>
-        <v-btn class="buttons" @click="back">Voltar</v-btn>
+      <v-row style="display: flex; justify-content: flex-end; padding: 1rem 0rem;">
+        <v-btn class="buttons" rounded dark color="pink" @click="back">Voltar</v-btn>
+        <v-btn class="buttons" rounded dark color="pink" @click="save">Salvar</v-btn>
       </v-row>
     </v-col>
   </v-container>
